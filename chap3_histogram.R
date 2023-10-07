@@ -15,8 +15,17 @@ head(dataset)
 
 ts_data <- dataset$serie
 
+train <- dataset[1:75,]
+test <- dataset[-(1:75),]
+
+norm <- minmax()
+norm <- fit(norm, train)
+train_n <- transform(norm, train)
+dataset_n <- transform(norm, dataset)
+summary(train_n)
+
 # Create a histogram of the time series data
-hist_data <- hist(ts_data[1:75], plot = FALSE)
+hist_data <- hist(train$serie, plot = FALSE)
 
 # Calculate bin edges and midpoints
 bin_edges <- hist_data$breaks
