@@ -3,7 +3,7 @@ library(readxl)
 library(daltoolbox)
 library(dplyr)
 library(stats)
-#source("hmu_pca.R")
+source("hmu_pca.R")
 
 # Load necessary libraries
 
