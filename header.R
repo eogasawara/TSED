@@ -91,7 +91,7 @@ motifs_seqs <- function(detection) {
   return(iMotif)
 }
 
-har_plot <- function (obj, serie, detection, event = NULL, mark.cp = TRUE, ylim = NULL, idx = NULL, pointsize=0.5) 
+har_plot <- function (obj, serie, detection, event = NULL, mark.cp = TRUE, ylim = NULL, idx = NULL, pointsize=0.5, colors=c("green", "blue", "red", "purple")) 
 {
   time <- 0
   if (is.null(idx)) 
@@ -108,11 +108,11 @@ har_plot <- function (obj, serie, detection, event = NULL, mark.cp = TRUE, ylim 
   motifs_seqs <- motifs_seqs(detection)
   if (!is.null(motifs_seqs)) {
     data$size[motifs_seqs] <- 1.5
-    data$color[motifs_seqs] <- "purple"
+    data$color[motifs_seqs] <- colors[4] #purple
   }
-  data$color[data$FN] <- "blue"
-  data$color[data$TP] <- "green"
-  data$color[data$FP] <- "red"
+  data$color[data$TP] <- colors[1] #green
+  data$color[data$FN] <- colors[2] #blue
+  data$color[data$FP] <- colors[3] #red
   data$size[data$FN | data$TP | data$FP] <- 1.5
   
   min_data <- min(serie)
