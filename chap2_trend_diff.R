@@ -1,8 +1,23 @@
 source("header.R")
+library(tseries)
 
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
 data$event <- FALSE
+
+
+bp.test <- function(serie) {
+  library(lmtest)
+  data <- data.frame(x = 1:length(serie), y = serie)
+  fit <- lm(y ~ x, data = data)
+  return(bptest(fit))
+}
+
+nonstationary.test <- function(serie) {
+  return(data.frame(adf = round(adf.test(serie)$p.value, 2),
+                    PP = round(PP.test(as.vector(serie))$p.value, 2),
+                    bp = round(bp.test(serie)$p.value, 2)))
+}
 
 y <- ts(data$temperature, start = c(1850, 1))
 model <- lm(y ~ time(y))
@@ -15,7 +30,7 @@ grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(a) - LR trend removal") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf + geom_point(size = 0.25, col="black") 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfa <- grf
 
 y <- data$temperature
@@ -30,7 +45,7 @@ grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(b) - MAS trend removal") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf + geom_point(size = 0.25, col="black") 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfb <- grf
 
 y <- c(NA, diff(data$temperature))
@@ -44,7 +59,7 @@ grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(c) - First order differencing") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf + geom_point(size = 0.25, col="black") 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfc <- grf
 
 
@@ -62,7 +77,7 @@ grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(d) PCT") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf + geom_point(size = 0.25, col="black") 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfd <- grf
 
 mypng(file="figures/chap2_trend_diff.png", width = 1600, height = 1080) #144 #720*1.5

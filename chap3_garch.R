@@ -1,10 +1,6 @@
 source("header.R")
-
-source("header.R")
-library(readxl)
 library(daltoolbox)
-library(dplyr)
-library(stats)
+library(harbinger)
 
 # Load necessary libraries
 
@@ -18,7 +14,7 @@ detection <- detect(model, data)
 print(detection |> dplyr::filter(event==TRUE))
 print(nrow(detection |> dplyr::filter(event==TRUE)))
 grf <- har_plot(model, data, detection) +
-  fontstyle + font + 
+  font + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
 grf <- grf + geom_vline(xintercept = 79, col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_vline(xintercept = 99, col="darkgray", linewidth = 0.5, linetype="dashed")

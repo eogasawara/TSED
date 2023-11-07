@@ -1,7 +1,9 @@
 source("header.R")
+library(forecast)
+library(harbinger)
+data(har_examples)
 
-#load("data/noaa-global/temp_monthly.RData")
-#data <- temp_monthly
+
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
 data$event <- FALSE
@@ -21,7 +23,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(a) - stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfaa<- grf
 
 grf <- ggAcf(serie_b)
@@ -32,7 +34,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(b) - trend stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfab <- grf
 
 grf <- ggAcf(serie_c)
@@ -43,7 +45,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(c) - level stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfac <- grf
 
 
@@ -55,7 +57,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(d) - heteroscedastic") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfad <- grf
 
 grf <- ggAcf(serie_e)
@@ -66,7 +68,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(e) - random walk") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfae <- grf
 
 grf <- ggAcf(serie)
@@ -77,7 +79,7 @@ grf <- grf + ylab("acf")
 grf <- grf + xlab("lag")
 grf <- grf + labs(caption = "(f) - YGT") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfaf <- grf
 
 mypng(file="figures/chap2_acf.png", width = 1600, height = 1260) #144 #720*1.75

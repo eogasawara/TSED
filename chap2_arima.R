@@ -1,20 +1,13 @@
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(daltoolbox)
 
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
 data$event <- FALSE
 
-#loading DAL
-library(daltoolbox)
-
-
-x <- data$temperature
-sw_size <- 0
-
-ts <- ts_data(x, sw_size)
-
+ts <- ts_data(data$temperature, 0)
 
 test_size <- 4
 samp <- ts_sample(ts, test_size)
@@ -24,10 +17,9 @@ model <- ts_arima()
 
 io_train <- ts_projection(samp$train)
 model <- daltoolbox::fit(model, x=io_train$input, y=io_train$output)
-#> tsreg_arima,0.004
 
 adjust <- predict(model, io_train$input)
-ev_adjust <- evaluate(model, io_train$output, adjust)
+ev_adjust <- daltoolbox::evaluate(model, io_train$output, adjust)
 print(head(ev_adjust$metrics))
 
 steps_ahead <- 4
@@ -41,7 +33,7 @@ if (steps_ahead > 1)
 
 print(sprintf("%.2f, %.2f", output, prediction))
 
-ev_test <- evaluate(model, output, prediction)
+ev_test <- daltoolbox::evaluate(model, output, prediction)
 print(head(ev_test$metrics))
 
 yvalues <- c(io_train$output, io_test$output)
@@ -65,7 +57,7 @@ grf <- grf + geom_line(aes(y=yhatadj), col="darkblue", linetype = "dashed")
 grf <- grf + geom_line(aes(y=yhatpred), col="red", linetype = "dashed") 
 grf <- grf + labs(caption = sprintf("(a) - ARIMA(%d, %d, %d) four-step-ahead prediction", params$p, params$d, params$q)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfA <- grf
 
 
@@ -87,7 +79,7 @@ grf <- grf + geom_line(aes(y=yhat_fit), col="darkblue", linetype = "dashed")
 grf <- grf + geom_point(aes(y=yts_fit),size = 1, col="black") 
 grf <- grf + labs(caption = sprintf("(b) - ARIMA(%d, %d, %d) model adjustment", params_fit$p, params_fit$d, params_fit$q)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfB <- grf
 
 mypng(file="figures/chap2_arima.png", width = 1280, height = 1080) 

@@ -44,10 +44,9 @@ grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor 
 grf <- grf + ylab("temperature")
 grf <- grf + xlab("time")
 grf <- grf + geom_point(aes(y=yts),size = 0.5, col="black") 
-#grf <- grf + geom_line(aes(y=yhat), size = 0.5, col="darkgray", linetype="dashed") 
 grf <- grf + labs(caption = sprintf("(a): %d harmonics", harmonics)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfa <- grf
 plot(grfa)
 
@@ -74,7 +73,7 @@ grf <- grf + xlab("spectrum")
 grf <- grf + geom_hline(yintercept = spec, col="darkgrey", size = 0.5, linetype="dotted")
 grf <- grf + labs(caption = "(b)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfb <- grf
 plot(grfb)
 
@@ -94,7 +93,7 @@ grf <- grf + geom_vline(xintercept = xts[tolerance], col="darkgrey", size = 0.5,
 grf <- grf + geom_vline(xintercept = xts[length(xts)-tolerance], col="darkgrey", size = 0.5, linetype="dotted")
 grf <- grf + labs(caption = sprintf("(c): %d harmonics", harmonics)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfc <- grf
 plot(grf)
 
@@ -109,7 +108,7 @@ grf <- grf + geom_vline(xintercept = xts[tolerance], col="darkgrey", size = 0.5,
 grf <- grf + geom_vline(xintercept = xts[length(xts)-tolerance], col="darkgrey", size = 0.5, linetype="dotted")
 grf <- grf + labs(caption = sprintf("(d)")) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfd <- grf
 plot(grfd)
 
@@ -118,17 +117,3 @@ gridExtra::grid.arrange(grfa, grfb, grfc, grfd,
                         layout_matrix = matrix(c(1,2,3,4), byrow = TRUE, ncol = 1))
 dev.off() 
 
-#https://stackoverflow.com/questions/41435777/perform-fourier-analysis-to-a-time-series-in-r
-
-if (FALSE) {
-  errors <- rep(0, nrow(df))
-  for (i in 1:length(errors)) {
-    yhat <- fft_harmonics(y, i)
-    errors[i] <- sum(abs(y-yhat))
-  }
-  
-  i <- 1:length(errors) 
-  myfit <- fit_curvature_max()
-  res <- dal::transform(myfit, errors)$x
-  #dal::plot.fit_curvature(myfit, errors, res)
-}

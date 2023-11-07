@@ -1,13 +1,26 @@
 source("header.R")
+library(tseries)
+library(TSPred)
 
-#load("data/noaa-global/temp_monthly.RData")
-#data <- temp_monthly
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
 data$event <- FALSE
 
-y <- data$temperature
 
+bp.test <- function(serie) {
+  library(lmtest)
+  data <- data.frame(x = 1:length(serie), y = serie)
+  fit <- lm(y ~ x, data = data)
+  return(bptest(fit))
+}
+
+nonstationary.test <- function(serie) {
+  return(data.frame(adf = round(adf.test(serie)$p.value, 2),
+                    PP = round(PP.test(as.vector(serie))$p.value, 2),
+                    bp = round(bp.test(serie)$p.value, 2)))
+}
+
+y <- data$temperature
 
 #log
 y_transformed <- TSPred::LogT(y)
@@ -23,7 +36,7 @@ grf <- grf + ylab("LT")
 grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(a)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 #plot(grf)
 grfa <- grf
 
@@ -41,7 +54,7 @@ grf <- grf + ylab("BCT")
 grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(b)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfb <- grf
 
 mypng(file="figures/chap2_vs.png", width = 1600, height = 720) # 1280 * 1.5

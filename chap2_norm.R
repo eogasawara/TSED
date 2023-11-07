@@ -2,6 +2,8 @@ source("header.R")
 options(scipen=999)
 library(ggpmisc)
 
+library(daltoolbox)
+
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
 
@@ -27,7 +29,7 @@ grf <- grf + geom_vline(xintercept = x[length(x)-test_size], col="black", linewi
 grf <- grf + geom_vline(xintercept = x[length(x)-test_size-sw_size+1], col="black", linewidth = 0.5, linetype="dotted")
 grf <- grf + labs(caption = "(a)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfS <- grf
 
 ### ts_gminmax
@@ -43,7 +45,7 @@ grf <- grf + ylab("")
 grf <- grf + xlab("global min-max")
 grf <- grf + labs(caption = "(b)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grf <- grf + ylim(0, 1)
 grfGA <- grf
 
@@ -60,7 +62,7 @@ grf <- grf + ylab("")
 grf <- grf + xlab("DIF")
 grf <- grf + labs(caption = "(c)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grf <- grf + ylim(0, 1)
 grfDA <- grf
 
@@ -77,7 +79,7 @@ grf <- grf + ylab("")
 grf <- grf + xlab("sw min-max")
 grf <- grf + labs(caption = "(d)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grf <- grf + ylim(0, 1)
 grfMA <- grf
 
@@ -94,7 +96,7 @@ grf <- grf + ylab("")
 grf <- grf + xlab("AN")
 grf <- grf + labs(caption = "(e)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grf <- grf + ylim(0, 1)
 grfAA <- grf
 

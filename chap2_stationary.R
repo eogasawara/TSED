@@ -1,4 +1,16 @@
 source("header.R")
+library(harbinger)
+library(tseries)
+data(har_examples)
+
+bp.test <- function(serie) {
+  library(lmtest)
+  data <- data.frame(x = 1:length(serie), y = serie)
+  fit <- lm(y ~ x, data = data)
+  return(bptest(fit))
+}
+
+load("data/noaa-global/temp_monthly.RData")
 
 serie_a <- har_examples[[9]]$serie[1:200]
 serie_b <- har_examples[[9]]$serie[201:400]
@@ -19,7 +31,7 @@ grf <- grf + geom_hline(yintercept = +var(ts_data), col="black", linetype = 'das
 grf <- grf + geom_hline(yintercept = -var(ts_data), col="black", linetype = 'dashed', size = 0.5)
 grf <- grf + labs(caption = "(a) - stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfsa <- grf
 
 
@@ -34,7 +46,7 @@ grf <- grf + xlab("time")
 grf <- grf + geom_line(aes(y=model$fitted.values),linetype="dashed") 
 grf <- grf + labs(caption = "(b) - trend stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfsb <- grf
 
 ts_data <- ts(serie_c)
@@ -48,7 +60,7 @@ grf <- grf + geom_segment(aes(x=1,xend=100,y=mean(serie_c[1:100]),yend=mean(seri
 grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(serie_c[101:200]),yend=mean(serie_c[101:200])))
 grf <- grf + labs(caption = "(c) - level stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfsc <- grf
 
 y <- ts_data <- ts(serie_d)
@@ -64,7 +76,7 @@ grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(y)+var(y[101:200]),yend=mean
 grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(y)-var(y[101:200]),yend=mean(y)-var(y[101:200])), linetype="dashed")
 grf <- grf + labs(caption = "(d) - heteroscedastic") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfsd <- grf
 
 ts_data <- ts(serie_e)
@@ -76,7 +88,7 @@ grf <- grf + ylab("value")
 grf <- grf + xlab("time")
 grf <- grf + labs(caption = "(e) - random walk") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfse <- grf
 
 test <- data.frame(

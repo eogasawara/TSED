@@ -1,7 +1,8 @@
 source("header.R")
+library(daltoolbox)
+library(harbinger)
 
 set.seed(1)
-
 
 data_a <- function() {
   data <- NULL
@@ -48,7 +49,7 @@ detection$type[c(16)] <- "changepoint"
 grf <- har_plot(model, a, detection)
 grf <- grf + ylab(" ") + ylim(0, 30)
 grf <- grf + font 
-grf <- grf + annotate(geom="text", family = fancy_font, x=16, y=1, label="(a)", color="black")
+grf <- grf + annotate(geom="text", x=16, y=1, label="(a)", color="black")
 grfA <- grf
 
 b <- data_b()
@@ -60,7 +61,7 @@ detection$type[c(10,20)] <- "changepoint"
 grf <- har_plot(model, b, detection)
 grf <- grf + ylab(" ") + ylim(0, 30)
 grf <- grf + font
-grf <- grf + annotate(geom="text", family = fancy_font, x=16, y=1, label="(b)", color="black")
+grf <- grf + annotate(geom="text", x=16, y=1, label="(b)", color="black")
 grfB <- grf
 
 c <- data_c()
@@ -72,7 +73,7 @@ detection$type[c(10,23)] <- "changepoint"
 grf <- har_plot(model, c, detection)
 grf <- grf + ylab(" ") + ylim(0, 30)
 grf <- grf + font
-grf <- grf + annotate(geom="text", family = fancy_font, x=16, y=1, label="(c)", color="black")
+grf <- grf + annotate(geom="text", x=16, y=1, label="(c)", color="black")
 grfC <- grf
 
 d <- data_d()
@@ -84,7 +85,7 @@ detection$type[c(8,16,24)] <- "changepoint"
 grf <- har_plot(model, d, detection)
 grf <- grf + ylab(" ") + ylim(0, 30)
 grf <- grf + font
-grf <- grf + annotate(geom="text", family = fancy_font, x=16, y=1, label="(d)", color="black")
+grf <- grf + annotate(geom="text", x=16, y=1, label="(d)", color="black")
 grfD <- grf
 
 mypng(file="figures/chap4_drift_type.png", width = 1280, height = 720) #144 #720*1.75
@@ -92,7 +93,3 @@ gridExtra::grid.arrange(grfA, grfB, grfC, grfD,
                         layout_matrix = matrix(c(1,1,2,2,3,3,4,4), byrow = TRUE, ncol = 4))
 dev.off()  
 
-
-
-
-#save_png(grf, "figures/chap4_drift.png", 1280, 720)

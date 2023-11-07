@@ -1,6 +1,7 @@
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(daltoolbox)
 
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
@@ -42,12 +43,12 @@ grf <- grf + geom_vline(xintercept = x[length(x)-test_size], col="darkgray", lin
 grf <- grf + geom_vline(xintercept = x[length(x)], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_point(aes(y=d1$ym),size = 0.5, col="darkgray") 
 grf <- grf + geom_tile(aes(y=d1$yb), height=0.05, width=1, size = 1, fill = d1$colors, color=d1$bcolors, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=15.15, label="training", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[21], y=15.15, label="test", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.2, label="colored representation for the time series", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=15.15, label="training", color="black")
+grf <- grf + annotate(geom="text", x=x[21], y=15.15, label="test", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.2, label="colored representation for the time series", color="black")
 grf <- grf + labs(caption = "(a)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfA <- grf
 #plot(grfA)
 
@@ -88,18 +89,18 @@ grf <- grf + geom_vline(xintercept = x[1], col="darkgray", linewidth = 0.5, line
 grf <- grf + geom_vline(xintercept = x[length(x)-test_size], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_vline(xintercept = x[length(x)], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_point(aes(y=d2$ym),size = 0.5, col="darkgray") 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=15.1, label="training", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[21], y=15.1, label="test", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.9, label="one step-ahead prediction", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=15.1, label="training", color="black")
+grf <- grf + annotate(geom="text", x=x[21], y=15.1, label="test", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.9, label="one step-ahead prediction", color="black")
 grf <- grf + geom_tile(aes(y=d2$yi), height=0.05, width=1, size = 1, fill = d2$colors, color=d2$bi, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.7, label="one step-ahead prediction with time series cross-validation", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.7, label="one step-ahead prediction with time series cross-validation", color="black")
 grf <- grf + geom_tile(aes(y=d2$y1), height=0.05, width=1, size = 1, fill = d2$colors, color=d2$b1, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=d2$y2), height=0.05, width=1, size = 1, fill = d2$colors, color=d2$b2, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=d2$y3), height=0.05, width=1, size = 1, fill = d2$colors, color=d2$b3, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=d2$y4), height=0.05, width=1, size = 1, fill = d2$colors, color=d2$b4, alpha=0.5) 
 grf <- grf + labs(caption = "(b)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfB <- grf
 #plot(grfB)
 
@@ -141,17 +142,17 @@ grf <- grf + xlab("year")
 grf <- grf + geom_vline(xintercept = x[1], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_vline(xintercept = x[length(x)-test_size], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_vline(xintercept = x[length(x)], col="darkgray", linewidth = 0.5, linetype="dashed")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=15.025, label="training", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[21], y=15.025, label="test", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=15.025, label="training", color="black")
+grf <- grf + annotate(geom="text", x=x[21], y=15.025, label="test", color="black")
 grf <- grf + geom_point(aes(y=d3$ym), size = 0.5, col="darkgray") 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.875, label="three step-ahead prediction", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.875, label="three step-ahead prediction", color="black")
 grf <- grf + geom_tile(aes(y=d3$yi), height=0.05, width=1, size = 1, fill = d3$colors, color=d3$bi, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.675, label="three step-ahead prediction with time series cross-validation", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.675, label="three step-ahead prediction with time series cross-validation", color="black")
 grf <- grf + geom_tile(aes(y=d3$y1), height=0.05, width=1, size = 1, fill = d3$colors, color=d3$b1, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=d3$y2), height=0.05, width=1, size = 1, fill = d3$colors, color=d3$b2, alpha=0.5) 
 grf <- grf + labs(caption = "(c)") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfC <- grf
 #plot(grfC)
 

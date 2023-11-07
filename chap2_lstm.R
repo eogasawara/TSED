@@ -8,7 +8,6 @@ data$event <- FALSE
 
 #loading DAL
 library(daltoolbox)
-library(reticulate)
 
 x <- temp_yearly$temperature
 sw_size <- 10
@@ -30,7 +29,7 @@ preproc <- ts_norm_gminmax()
   adjust <- predict(model, io_train$input)
   adjust <- as.vector(adjust)
   output <- as.vector(io_train$output)
-  ev_adjust <- evaluate(model, output, adjust)
+  ev_adjust <- daltoolbox::evaluate(model, output, adjust)
   ev_adjust$mse
   
   steps_ahead <- 4
@@ -64,7 +63,7 @@ preproc <- ts_norm_gminmax()
   grf <- grf + geom_line(aes(y=yhatpred), col="red", linetype = "dashed") 
   grf <- grf + labs(caption = sprintf("(a) - LSTM four-step-ahead prediction")) 
   grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-  grf <- grf + fontstyle + font
+  grf <- grf  + font
   grfA <- grf
 }
 
@@ -75,7 +74,7 @@ preproc <- ts_norm_gminmax()
   model_fit <- fit(model_fit, x=io_fit$input, y=io_fit$output)
   
   adjust_fit <- predict(model_fit, io_fit$input)
-  ev_adjust <- evaluate(model, io_fit$output, adjust_fit)
+  ev_adjust <- daltoolbox::evaluate(model, io_fit$output, adjust_fit)
   adjust_fit <- as.vector(adjust_fit)
   ev_adjust$mse
   
@@ -95,7 +94,7 @@ preproc <- ts_norm_gminmax()
   grf <- grf + geom_point(aes(y=yts_fit), size = 0.5, col="black") 
   grf <- grf + labs(caption = sprintf("(b) - LSTM model adjustment")) 
   grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-  grf <- grf + fontstyle + font
+  grf <- grf  + font
   grfB <- grf
 }
 

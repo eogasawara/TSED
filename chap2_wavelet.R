@@ -1,4 +1,6 @@
 source("header.R")
+library(forecast)
+library(TSPred)
 options(scipen=999)
 
 load("data/noaa-global/temp_yearly.RData")
@@ -9,13 +11,9 @@ y <- data$temperature
 yts <- ts(y, start = c(1850, 1))
 xts <- time(yts)
 
-#ts_data <- arima.sim(list(order=c(1,0,0), ar=0.8), n=100)+10
-#y <- ts_data
-#yts <- ts(y)
-#autoplot(ts(y))
-
 #decompose the time series by maximal overlap discrete wavelet transform
 wavelet_components <- WaveletT(y, filter="haar") #"haar", "d4", "la8", "bl14", "c6"
+
 #get wavelet object (necessary for reverse transforming)
 wt <- attr(wavelet_components,"wt_obj")
 yhat <- WaveletT.rev(pred=NULL, wt)
@@ -29,7 +27,7 @@ grf <- grf + xlab("time")
 grf <- grf + geom_point(aes(y=yts),size = 0.5, col="black") 
 grf <- grf + labs(caption = "(a) using all \u03b6 and \u03c8 components") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfa <- grf
 
 tolerance <- 30
@@ -58,7 +56,7 @@ if (n > 1) {
   grf <- grf + labs(caption = "(b) \u03b6 component") 
 }
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfb <- grf
 plot(grfb)
 
@@ -85,7 +83,7 @@ if (n > 1) {
 }
 grf <- grf + geom_point(size = 0.5, col="black") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf + fontstyle + font
+grf <- grf  + font
 grfc <- grf
 
 

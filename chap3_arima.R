@@ -1,6 +1,8 @@
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(daltoolbox)
+library(harbinger)
 
 
 #loading the example database
@@ -20,7 +22,7 @@ slevels <- levels(dataset$event)
 train <- dataset[1:75,]
 test <- dataset[-(1:75),]
 
-norm <- minmax()
+norm <- daltoolbox::minmax()
 norm <- fit(norm, train)
 train_n <- transform(norm, train)
 dataset_n <- transform(norm, dataset)
@@ -50,7 +52,7 @@ grf <- har_plot(model, dataset_n$serie, detection, as.logical(dataset_n$event))
 grf <- grf + geom_vline(xintercept = 75, col = "black", linetype = "dashed")
 grf <- grf + geom_line(aes(y=adjust), linetype = "dashed", col="darkblue") 
 grf <- grf + geom_point(aes(y=adjust), size=0.25, col="darkblue") 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 save_png(grf, "figures/chap3_arima.png", 1280, 720)
 
 

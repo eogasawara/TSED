@@ -1,6 +1,7 @@
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(daltoolbox)
 
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
@@ -58,17 +59,17 @@ grf <- grf + theme(plot.title = element_blank())
 grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
 grf <- grf + ylab("temperature")
 grf <- grf + xlab("year")
-grf <- grf + annotate(geom="table", family = fancy_font,  x = 2000, y = 14.97, label = list(xwt), size = 5)
-grf <- grf + annotate(geom="text", family = fancy_font, x=2013, y=14.3, label="colored representatation for the time series", color="black")
+grf <- grf + annotate(geom="table",  x = 2000, y = 15, label = list(xwt), size = 5)
+grf <- grf + annotate(geom="text", x=2013, y=14.3, label="colored representatation for the time series", color="black")
 grf <- grf + geom_tile(aes(y=yb), height=0.025, width=1, size = 1, fill = colors, color=bcolors, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=2013, y=14.2, label="colored representatation for the sliding windows of size 3", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=ysw1[4], label="t", color="black")
+grf <- grf + annotate(geom="text", x=2013, y=14.2, label="colored representatation for the sliding windows of size 3", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=ysw1[4], label="t", color="black")
 grf <- grf + geom_tile(aes(y=ysw1), height=0.025, width=1, size = 1, fill = colors1, color=bcolors, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=ysw2[4], label="t-1", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=ysw2[4], label="t-1", color="black")
 grf <- grf + geom_tile(aes(y=ysw2), height=0.025, width=1, size = 1, fill = colors2, color=bcolors, alpha=0.5) 
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=ysw3[4], label="t-2", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=ysw3[4], label="t-2", color="black")
 grf <- grf + geom_tile(aes(y=ysw3), height=0.025, width=1, size = 1, fill = colors3, color=bcolors, alpha=0.5) 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 
 save_png(grf, "figures/chap2_sw.png", width = 1280, height = 720)
 

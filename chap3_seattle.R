@@ -1,5 +1,8 @@
 source("header.R")
 library(readxl)
+library(daltoolbox)
+library(harbinger)
+library(dplyr)
 
 graphic_seattle <- function() {
   seattle <- read_excel("data/seattle.xlsx")
@@ -27,7 +30,7 @@ graphic_seattle <- function() {
   grf <- har_plot(model, seattle$temp, detection, seattle$event)
   grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "Seattle 2019 (weeks)")
   grf <- grf + ylab("temperature (ºC)")
-  grf <- grf + fontstyle + font
+  grf <- grf  + font
   return(grf)
 }
 
@@ -61,7 +64,7 @@ graphic_seattle_seq <- function() {
   grf <- har_plot(model, seattle$temp, detection, seattle$event)
   grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "Synthetic time series (weeks)")
   grf <- grf + ylab("temperature (ºC)")
-  grf <- grf + fontstyle + font
+  grf <- grf  + font
   return(grf)
 }
 

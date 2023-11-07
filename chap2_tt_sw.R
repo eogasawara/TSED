@@ -1,6 +1,7 @@
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(daltoolbox)
 
 load("data/noaa-global/temp_yearly.RData")
 data <- temp_yearly
@@ -61,41 +62,41 @@ grf <- grf + geom_vline(xintercept = x[1], col="darkgray", linewidth = 0.5, line
 grf <- grf + geom_vline(xintercept = x[n-test_size], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_vline(xintercept = x[n], col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_point(aes(y=d4$ym),size = 0.5, col="darkgray") 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=15.1, label="training", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[21], y=15.1, label="test", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=15.1, label="training", color="black")
+grf <- grf + annotate(geom="text", x=x[21], y=15.1, label="test", color="black")
 grf <- grf + geom_tile(aes(y=d4$yb), height=0.05, width=1, size = 1, fill = d4$colors, color=d4$bcolorsreal, alpha=0.5) 
 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.95, label="one step-ahead prediction", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y1[4], label="t", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y2[4]-0.05, label="t-1", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y3[4]-0.1, label="t-2", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.95, label="one step-ahead prediction", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y1[4], label="t", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y2[4]-0.05, label="t-1", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y3[4]-0.1, label="t-2", color="black")
 grf <- grf + geom_tile(aes(y=show_test(d4$y1, 1, test_size)), height=0.05, width=1, size = 1, fill = d4$colors1, color=d4$bcolorspred, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y2-0.05, 0, test_size)), height=0.05, width=1, size = 1, fill = d4$colors2, color=d4$bcolorspred, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y3-0.1, 0, test_size)), height=0.05, width=1, size = 1, fill = d4$colors3, color=d4$bcolorspred, alpha=0.5) 
 
-grf <- grf + annotate(geom="text", family = fancy_font, x=x[10], y=14.75, label="one step-ahead prediction with time series cross-validation", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y1[4]-0.30, label="t-2", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y2[4]-0.25, label="t-1", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y3[4]-0.20, label="t", color="black")
+grf <- grf + annotate(geom="text", x=x[10], y=14.75, label="one step-ahead prediction with time series cross-validation", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y1[4]-0.30, label="t-2", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y2[4]-0.25, label="t-1", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y3[4]-0.20, label="t", color="black")
 grf <- grf + geom_tile(aes(y=show_test(d4$y3, 1, test_size)-0.30), height=0.05, width=1, size = 1, fill = d4$colors3, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y2, 1, test_size)-0.25), height=0.05, width=1, size = 1, fill = d4$colors2, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y1, 2, test_size)-0.20), height=0.05, width=1, size = 1, fill = d4$colors1, color=d4$bcolorspred, alpha=0.5) 
 
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y1[4]-0.50, label="t-2", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y2[4]-0.45, label="t-1", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y3[4]-0.40, label="t", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y1[4]-0.50, label="t-2", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y2[4]-0.45, label="t-1", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y3[4]-0.40, label="t", color="black")
 grf <- grf + geom_tile(aes(y=show_test(d4$y3, 2, test_size)-0.50), height=0.05, width=1, size = 1, fill = d4$colors3, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y2, 2, test_size)-0.45), height=0.05, width=1, size = 1, fill = d4$colors2, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y1, 3, test_size)-0.40), height=0.05, width=1, size = 1, fill = d4$colors1, color=d4$bcolorspred, alpha=0.5) 
 
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y1[4]-0.70, label="t-2", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y2[4]-0.65, label="t-1", color="black")
-grf <- grf + annotate(geom="text", family = fancy_font, x=2001, y=d4$y3[4]-0.60, label="t", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y1[4]-0.70, label="t-2", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y2[4]-0.65, label="t-1", color="black")
+grf <- grf + annotate(geom="text", x=2001, y=d4$y3[4]-0.60, label="t", color="black")
 grf <- grf + geom_tile(aes(y=show_test(d4$y3, 3, test_size)-0.70), height=0.05, width=1, size = 1, fill = d4$colors3, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y2, 3, test_size)-0.65), height=0.05, width=1, size = 1, fill = d4$colors2, color=d4$bcolors, alpha=0.5) 
 grf <- grf + geom_tile(aes(y=show_test(d4$y1, 4, test_size)-0.60), height=0.05, width=1, size = 1, fill = d4$colors1, color=d4$bcolorspred, alpha=0.5) 
 
-grf <- grf + fontstyle + font
+grf <- grf  + font
 
 save_png(grf, "figures/chap2_tt_sw.png", width=1280, height=720)
 

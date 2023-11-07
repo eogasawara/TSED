@@ -1,4 +1,5 @@
 source("header.R")
+library(harbinger)
 
 load("data/noaa-global/temp_monthly.RData")
 data <- temp_monthly
@@ -8,7 +9,7 @@ model <- harbinger()
 model <- fit(model, data$temperature)
 detection <- detect(model, data$temperature)
 grf <- har_plot(model, data$temperature, detection, data$event, idx = data$x, pointsize=0.25) +
-  fontstyle + font + 
+  font + 
   scale_x_date(breaks = "10 years",  date_labels = "%Y",  limits = c(as.Date("1850-01-01"), as.Date("2030-01-01"))) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.caption=element_text(hjust = 0.5)) 
 grf <- grf + ylab("temperature")
@@ -24,7 +25,7 @@ model <- harbinger()
 model <- fit(model, data$temperature)
 detection <- detect(model, data$temperature)
 grf <- har_plot(model, data$temperature, detection, data$event, idx = data$x) +
-  fontstyle + font + 
+  font + 
   scale_x_date(breaks = "10 years",  date_labels = "%Y",  limits = c(as.Date("1850-01-01"), as.Date("2030-01-01"))) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.caption=element_text(hjust = 0.5)) 
 grf <- grf + ylab("temperature")
