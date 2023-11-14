@@ -28,7 +28,7 @@ graphic_seattle <- function() {
   
   # ploting the results
   grf <- har_plot(model, seattle$temp, detection, seattle$event)
-  grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "Seattle 2019 (weeks)")
+  grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "(a) Seattle 2019 (weeks)")
   grf <- grf + ylab("temperature (ºC)")
   grf <- grf  + font
   return(grf)
@@ -62,7 +62,7 @@ graphic_seattle_seq <- function() {
 
   # ploting the results
   grf <- har_plot(model, seattle$temp, detection, seattle$event)
-  grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "Synthetic time series (weeks)")
+  grf <- grf + scale_x_continuous(breaks = seq(4, 52, by = 4), "(b) Synthetic time series (weeks)")
   grf <- grf + ylab("temperature (ºC)")
   grf <- grf  + font
   return(grf)

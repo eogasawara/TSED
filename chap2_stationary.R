@@ -29,7 +29,7 @@ grf <- grf + xlab("time")
 grf <- grf + geom_hline(yintercept = 0, col="black", size = 0.5)
 grf <- grf + geom_hline(yintercept = +var(ts_data), col="black", linetype = 'dashed', size = 0.5)
 grf <- grf + geom_hline(yintercept = -var(ts_data), col="black", linetype = 'dashed', size = 0.5)
-grf <- grf + labs(caption = "(a) - stationary") 
+grf <- grf + labs(caption = "(a) stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfsa <- grf
@@ -44,7 +44,7 @@ grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor 
 grf <- grf + ylab("value")
 grf <- grf + xlab("time")
 grf <- grf + geom_line(aes(y=model$fitted.values),linetype="dashed") 
-grf <- grf + labs(caption = "(b) - trend stationary") 
+grf <- grf + labs(caption = "(b) trend stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfsb <- grf
@@ -58,7 +58,7 @@ grf <- grf + ylab("value")
 grf <- grf + xlab("time")
 grf <- grf + geom_segment(aes(x=1,xend=100,y=mean(serie_c[1:100]),yend=mean(serie_c[1:100])))
 grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(serie_c[101:200]),yend=mean(serie_c[101:200])))
-grf <- grf + labs(caption = "(c) - level stationary") 
+grf <- grf + labs(caption = "(c) level stationary") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfsc <- grf
@@ -74,7 +74,7 @@ grf <- grf + geom_segment(aes(x=1,xend=100,y=mean(y)+var(y[1:100]),yend=mean(y)+
 grf <- grf + geom_segment(aes(x=1,xend=100,y=mean(y)-var(y[1:100]),yend=mean(y)-var(y[1:100])), linetype="dashed")
 grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(y)+var(y[101:200]),yend=mean(y)+var(y[101:200])), linetype="dashed")
 grf <- grf + geom_segment(aes(x=101,xend=200,y=mean(y)-var(y[101:200]),yend=mean(y)-var(y[101:200])), linetype="dashed")
-grf <- grf + labs(caption = "(d) - heteroscedastic") 
+grf <- grf + labs(caption = "(d) heteroscedastic") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfsd <- grf
@@ -86,7 +86,7 @@ grf <- grf + theme(plot.title = element_blank())
 grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
 grf <- grf + ylab("value")
 grf <- grf + xlab("time")
-grf <- grf + labs(caption = "(e) - random walk") 
+grf <- grf + labs(caption = "(e) random walk") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfse <- grf

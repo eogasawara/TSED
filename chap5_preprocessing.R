@@ -42,6 +42,7 @@ grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-1.1, label="A", c
 grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-0.25, label="B", color="black")
 grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y= 0.6, label="C", color="black")
 grf <- grf + annotate(geom="text", x=as.Date('1940-01-01'), y=-2, label="(a)", color="black")
+grf <- grf + ylim(-2, 3)
 grf$layers[[1]]$aes_params$size <- 0.25
 grfA <- grf
 
@@ -58,6 +59,7 @@ grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-1.1, label="A", c
 grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-0.25, label="B", color="black")
 grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y= 0.6, label="C", color="black")
 grf <- grf + annotate(geom="text", x=as.Date('1940-01-01'), y=-2, label="(b)", color="black")
+grf <- grf + ylim(-2, 3)
 grf$layers[[1]]$aes_params$size <- 0.25
 grfB <- grf
 

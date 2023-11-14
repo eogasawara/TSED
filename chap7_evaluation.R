@@ -1,4 +1,6 @@
 source("header.R")
+library(daltoolbox)
+library(harbinger)
 
 set.seed(1)
 
@@ -27,7 +29,7 @@ grfA <- function(data, detection, event) {
   grf <- grf + font 
   grf <- grf + annotate(geom="text", x=11, y=16.2, label="E[1]", color="red", parse=TRUE)
   grf <- grf + geom_point(aes(11, 15), colour = "red", size = 1)  
-  grf <- grf + annotate(geom="text", x=2, y=19, label="(a) - time = 11", color="black", parse=FALSE)
+  grf <- grf + annotate(geom="text", x=2, y=19, label="(a) time = 11", color="black", parse=FALSE)
 }
 
 grfB <- function(data, detection, event) {
@@ -44,7 +46,7 @@ grfB <- function(data, detection, event) {
   grf <- grf + annotate(geom="text", x=12.2, y=14.2, label="B", color="blue", parse=TRUE)
   grf <- grf + geom_point(aes(11, 15), colour = "red", size = 1)  
   grf <- grf + geom_point(aes(12, data[12]), colour = "blue", size = 1.25)  
-  grf <- grf + annotate(geom="text", x=2, y=19, label="(b) - time = 13", color="black", parse=FALSE)
+  grf <- grf + annotate(geom="text", x=2, y=19, label="(b) time = 13", color="black", parse=FALSE)
 }
 
 grfC <- function(data, detection, event) {
@@ -62,7 +64,7 @@ grfC <- function(data, detection, event) {
   grf <- grf + geom_point(aes(11, 15), colour = "red", size = 1)  
   grf <- grf + geom_point(aes(9, 15), colour = "blue", size = 1.25)  
   grf <- grf + geom_point(aes(12, data[12]), colour = "blue", size = 1.25)  
-  grf <- grf + annotate(geom="text", x=2, y=19, label="(c) - time = 15", color="black", parse=FALSE)
+  grf <- grf + annotate(geom="text", x=2, y=19, label="(c) time = 15", color="black", parse=FALSE)
 }
 
 grfD <- function(data, detection, event) {
@@ -82,7 +84,7 @@ grfD <- function(data, detection, event) {
   grf <- grf + geom_point(aes(20, 5), colour = "red", size = 1)  
   grf <- grf + geom_point(aes(10, 15), colour = "blue", size = 1.25)  
   grf <- grf + geom_point(aes(12, data[12]), colour = "blue", size = 1.25)  
-  grf <- grf + annotate(geom="text", x=2, y=19, label="(d) - time = 28", color="black", parse=FALSE)
+  grf <- grf + annotate(geom="text", x=2, y=19, label="(d) time = 28", color="black", parse=FALSE)
 }
 
 grfa <- grfA(data, detection, event)

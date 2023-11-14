@@ -45,12 +45,18 @@ preproc <- ts_norm_gminmax()
   
   yvalues <- c(io_train$output, io_test$output)
   
-  yts <- ts(c(rep(NA, 9), yvalues), frequency=1, start = c(1850, 1))
-  yhat <- ts(c(rep(NA, 9), adjust, prediction), frequency=1, start = c(1850, 1))
+  
+  yts <- c(rep(NA, 9),yvalues)
+  yts <- yts[-c(1:100)]
+  yhat <- c(rep(NA, 9), adjust, prediction)
+  yhat <- yhat[-c(1:100)]
+  yts <- ts(yts, frequency=1, start = c(1950, 1))
+  yhat <- ts(yhat, frequency=1, start = c(1950, 1))
+
   yhatadj <- yhat
-  yhatadj[(length(c(rep(NA, 9), adjust))+1):length(yhat)] <- NA
+  yhatadj[(length(yhat)-length(prediction)+1):(length(yhat))] <- NA
   yhatpred <- yhat
-  yhatpred[1:(length(c(rep(NA, 9), adjust)))] <- NA
+  yhatpred[1:(length(yhat)-length(prediction))] <- NA
   
   grf <- autoplot(yts, col="black")
   grf <- grf + theme_bw(base_size = 10)
@@ -60,8 +66,10 @@ preproc <- ts_norm_gminmax()
   grf <- grf + xlab("time")
   grf <- grf + geom_point(aes(y=yts),size = 0.5, col="black") 
   grf <- grf + geom_line(aes(y=yhatadj), col="darkblue", linetype = "dashed") 
+  grf <- grf + geom_point(aes(y=yhatadj), size = 0.5, col="darkblue") 
   grf <- grf + geom_line(aes(y=yhatpred), col="red", linetype = "dashed") 
-  grf <- grf + labs(caption = sprintf("(a) - LSTM four-step-ahead prediction")) 
+  grf <- grf + geom_point(aes(y=yhatpred), size = 0.5, col="red") 
+  grf <- grf + labs(caption = sprintf("(a) LSTM four-step-ahead prediction")) 
   grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
   grf <- grf  + font
   grfA <- grf
@@ -79,11 +87,13 @@ preproc <- ts_norm_gminmax()
   ev_adjust$mse
   
   
-  yvalues_fit <- c(io_fit$output)
-  
-  yts_fit <- ts(c(rep(NA, 9), yvalues_fit), frequency=1, start = c(1850, 1))
-  yhat_fit <- ts(c(rep(NA, 9), adjust_fit), frequency=1, start = c(1850, 1))
-  
+  yts_fit <- c(rep(NA, 9),io_fit$output)
+  yts_fit <- yts_fit[-c(1:100)]
+  adjust_fit <- c(rep(NA, 9), adjust_fit)
+  adjust_fit <- adjust_fit[-c(1:100)]
+  yts_fit <- ts(yts_fit, frequency=1, start = c(1950, 1))
+  yhat_fit <- ts(adjust_fit, frequency=1, start = c(1950, 1))
+
   grf <- autoplot(yts_fit, col="black")
   grf <- grf + theme_bw(base_size = 10)
   grf <- grf + theme(plot.title = element_blank())
@@ -91,8 +101,9 @@ preproc <- ts_norm_gminmax()
   grf <- grf + ylab("temperature")
   grf <- grf + xlab("time")
   grf <- grf + geom_line(aes(y=yhat_fit), col="darkblue", linetype = "dashed") 
+  grf <- grf + geom_point(aes(y=yhat_fit), size = 0.5, col="darkblue") 
   grf <- grf + geom_point(aes(y=yts_fit), size = 0.5, col="black") 
-  grf <- grf + labs(caption = sprintf("(b) - LSTM model adjustment")) 
+  grf <- grf + labs(caption = sprintf("(b) LSTM model adjustment")) 
   grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
   grf <- grf  + font
   grfB <- grf

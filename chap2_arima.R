@@ -39,8 +39,10 @@ print(head(ev_test$metrics))
 yvalues <- c(io_train$output, io_test$output)
 
 params <- attr(model, "params")
-yts <- ts(data$temperature, frequency=1, start = c(1850, 1))
-yhat <- ts(c(adjust, prediction), frequency=1, start = c(1850, 1))
+temperature <- data$temperature[-c(1:100)]
+adjust <- adjust[-c(1:100)]
+yts <- ts(temperature, frequency=1, start = c(1950, 1))
+yhat <- ts(c(adjust, prediction), frequency=1, start = c(1950, 1))
 yhatadj <- yhat
 yhatadj[(length(adjust)+1):length(yhat)] <- NA
 yhatpred <- yhat
@@ -54,8 +56,10 @@ grf <- grf + ylab("temperature")
 grf <- grf + xlab("time")
 grf <- grf + geom_point(aes(y=yts),size = 0.5, col="black") 
 grf <- grf + geom_line(aes(y=yhatadj), col="darkblue", linetype = "dashed") 
+grf <- grf + geom_point(aes(y=yhatadj), size = 0.5, col="darkblue") 
 grf <- grf + geom_line(aes(y=yhatpred), col="red", linetype = "dashed") 
-grf <- grf + labs(caption = sprintf("(a) - ARIMA(%d, %d, %d) four-step-ahead prediction", params$p, params$d, params$q)) 
+grf <- grf + geom_point(aes(y=yhatpred), size = 0.5, col="red") 
+grf <- grf + labs(caption = sprintf("(a) ARIMA(%d, %d, %d) four-step-ahead prediction", params$p, params$d, params$q)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfA <- grf
@@ -66,8 +70,10 @@ io_train_fit <- ts_projection(ts)
 model_fit <- daltoolbox::fit(model_fit, x=io_train_fit$input, y=io_train_fit$output)
 adjust_fit <- predict(model_fit, io_train_fit$input)
 params_fit <- attr(model_fit, "params")
-yts_fit <- ts(data$temperature, frequency=1, start = c(1850, 1))
-yhat_fit <- ts(adjust_fit, frequency=1, start = c(1850, 1))
+temperature <- data$temperature[-c(1:100)]
+adjust_fit <- adjust_fit[-c(1:100)]
+yts_fit <- ts(temperature, frequency=1, start = c(1950, 1))
+yhat_fit <- ts(adjust_fit, frequency=1, start = c(1950, 1))
 
 grf <- autoplot(yts_fit, col="black")
 grf <- grf + theme_bw(base_size = 10)
@@ -76,8 +82,9 @@ grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor 
 grf <- grf + ylab("temperature")
 grf <- grf + xlab("time")
 grf <- grf + geom_line(aes(y=yhat_fit), col="darkblue", linetype = "dashed") 
-grf <- grf + geom_point(aes(y=yts_fit),size = 1, col="black") 
-grf <- grf + labs(caption = sprintf("(b) - ARIMA(%d, %d, %d) model adjustment", params_fit$p, params_fit$d, params_fit$q)) 
+grf <- grf + geom_point(aes(y=yhat_fit), size = 0.5, col="darkblue") 
+grf <- grf + geom_point(aes(y=yts_fit), size = 0.5, col="black") 
+grf <- grf + labs(caption = sprintf("(b) ARIMA(%d, %d, %d) model adjustment", params_fit$p, params_fit$d, params_fit$q)) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
 grfB <- grf
