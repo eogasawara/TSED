@@ -48,8 +48,10 @@ area_year <- area_year |> dplyr::arrange(year)
 colnames(area_year)[1] <- "x"
 head(area_year)
 
+seq(1950, 2020, 10)
 grf <- plot_series(area_year, colors=colors[1:4]) + scale_y_continuous(trans = log10_trans())
-grf <- grf + font
+grf <- grf + font 
+grf <- grf + scale_x_continuous(expand = expansion(add = 10))
 
 save_png(grf, "figures/chap8_production.png", 1280, 720)
 
