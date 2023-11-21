@@ -31,7 +31,7 @@ print(evaluation$confMatrix)
 
 # ploting the results
 grf <- har_plot(model, dataset$serie, detection, dataset$event)
-grf <- grf + geom_vline(xintercept = 75, col = "black", linetype = "dashed")
+#grf <- grf + geom_vline(xintercept = 75, col = "black", linetype = "dashed")
 grf <- grf  + font
 save_png(grf, "figures/chap3_kmeans.png", 1280, 720)
 

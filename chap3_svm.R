@@ -19,10 +19,8 @@ slevels <- levels(dataset$event)
 train <- dataset[1:75,]
 test <- dataset[-(1:75),]
 
-norm <- daltoolbox::minmax()
-norm <- fit(norm, train)
-train_n <- transform(norm, train)
-dataset_n <- transform(norm, dataset)
+train_n <- train
+dataset_n <- dataset
 summary(train_n)
 
 model <- hanc_ml(cla_svm("event", slevels, epsilon=0.0,cost=20.000))
