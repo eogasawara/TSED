@@ -26,10 +26,12 @@ for (i in 1851:2022) {
 
 save_png(grf, "figures/chap7_offline.png", 1280, 720)
 
-
-library(apng)
+library(gifski) # apt-get install cargo 
 
 png_files <- list.files("temp/", pattern = ".*png$", full.names = TRUE)
-output <- "figures/chap7_online.png"
+output <- "figures/chap7_online.gif"
+gifski(png_files, gif_file = output, width = 1280, height = 720, delay = 1)
 
-apng(c(png_files), output)
+
+#library(apng)
+#apng(c(png_files), output)
