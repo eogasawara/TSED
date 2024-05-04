@@ -30,7 +30,7 @@ library(gifski) # apt-get install cargo
 
 png_files <- list.files("temp/", pattern = ".*png$", full.names = TRUE)
 output <- "figures/chap7_online.gif"
-gifski(png_files, gif_file = output, width = 1280, height = 720, delay = 1)
+gifski(png_files, gif_file = output, width = 1280, height = 720, delay = 0.1)
 
 
 #library(apng)
