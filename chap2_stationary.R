@@ -1,7 +1,7 @@
 source("header.R")
 library(harbinger)
 library(tseries)
-data(har_examples)
+data("examples_anomalies")
 
 bp.test <- function(serie) {
   library(lmtest)
@@ -10,13 +10,13 @@ bp.test <- function(serie) {
   return(bptest(fit))
 }
 
-load("data/noaa-global/temp_monthly.RData")
+data(examples_harbinger)
 
-serie_a <- har_examples[[9]]$serie[1:200]
-serie_b <- har_examples[[9]]$serie[201:400]
-serie_c <- har_examples[[9]]$serie[401:600]
-serie_d <- har_examples[[9]]$serie[601:800]
-serie_e <- har_examples[[9]]$serie[801:1000]
+serie_a <- examples_harbinger$nonstationarity$serie[1:200]
+serie_b <- examples_harbinger$nonstationarity$serie[201:400]
+serie_c <- examples_harbinger$nonstationarity$serie[401:600]
+serie_d <- examples_harbinger$nonstationarity$serie[601:800]
+serie_e <- examples_harbinger$nonstationarity$serie[801:1000]
 
 x <- 1:200
 ts_data <- ts(serie_a)
@@ -98,19 +98,19 @@ test <- data.frame(
                    adf.test(serie_c)$p.value,
                    adf.test(serie_d)$p.value,
                    adf.test(serie_e)$p.value,
-                   adf.test(temp_monthly$temperature)$p.value),
+                   adf.test(examples_harbinger$global_temperature_monthly)$p.value),
            pp = c(PP.test(serie_a)$p.value, 
                   PP.test(serie_b)$p.value, 
                   PP.test(serie_c)$p.value,
                   PP.test(serie_d)$p.value,
                   PP.test(serie_e)$p.value,
-                  PP.test(temp_monthly$temperature)$p.value),
+                  PP.test(examples_harbinger$global_temperature_monthly)$p.value),
            bp = c(bp.test(serie_a)$p.value, 
                   bp.test(serie_b)$p.value, 
                   bp.test(serie_c)$p.value,
                   bp.test(serie_d)$p.value,
                   bp.test(serie_e)$p.value,
-                  bp.test(temp_monthly$temperature)$p.value)
+                  bp.test(examples_harbinger$global_temperature_monthly)$p.value)
 )
 
 test$adf <- round(test$adf, 2)

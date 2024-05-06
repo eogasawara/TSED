@@ -3,10 +3,10 @@ library(daltoolbox)
 library(harbinger)
 
 #loading the example database
-data(har_examples)
+data("examples_anomalies")
 
-#Using the time series 18 
-dataset <- har_examples$example18
+#Using the tt warped time series
+dataset <- dataset <- examples_anomalies$tt_warped
 dataset$event <- factor(dataset$event, labels=c("FALSE", "TRUE"))
 head(dataset)
 

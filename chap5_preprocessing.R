@@ -24,13 +24,17 @@ norm_data <- function(data, x) {
   return(data)
 }
 
-load("data/noaa-global/temp_monthly.RData")
-ts_data_m <- ts(temp_monthly$temperature, frequency=12, start = c(1850, 1))
+data(examples_harbinger)
 
-load("data/noaa-global/temp_yearly.RData")
-ts_data <- ts(temp_yearly$temperature, frequency=1, start = c(1850, 1))
+temp_monthly <- examples_harbinger$global_temperature_monthly
+temp_yearly <- examples_harbinger$global_temperature_yearly
 
-data_m <- norm_data(ts_data_m, temp_monthly$x)
+
+ts_data_m <- ts(temp_monthly$serie, frequency=12, start = c(1850, 1))
+
+ts_data <- ts(temp_yearly$serie, frequency=1, start = c(1850, 1))
+
+data_m <- norm_data(ts_data_m, temp_monthly$i)
 mybin_m <- binning_sax(data_m$temperature, 3)
 
 grf <- plot_ts(x = data_m$x, y = data_m$temperature) + font
@@ -47,7 +51,7 @@ grf$layers[[1]]$aes_params$size <- 0.25
 grfA <- grf
 
 
-data <- norm_data(ts_data, temp_yearly$x)
+data <- norm_data(ts_data, temp_yearly$i)
 mybin <- binning_sax(data$temperature, 3)
 
 grf <- plot_ts(x = data$x, y = data$temperature) + font

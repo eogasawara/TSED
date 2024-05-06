@@ -2,19 +2,17 @@ source("header.R")
 library(daltoolbox)
 library(harbinger)
 
-set.seed(1)
-n <- 100  # Number of time points
-data <- c(sin((1:n)/pi), 2*sin((1:n)/pi), 10 + sin((1:n)/pi), 10-10/n*(1:n)+sin((1:n)/pi)/2, sin((1:n)/pi)/2)
-event <- rep(FALSE, n)
+source(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/develop/hcd_page_hinkley.R"))
 
-#there is a bug when the data frame has only one serie. This should be corrected soon.
-data <- data.frame(serie1 = data, serie2 = data)
+load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_changepoints.RData"))
+data <- examples_changepoints$complex
+data$event <- NULL
 
 model <- fit(hcd_page_hinkley(threshold=3), data)
 detection <- detect(model, data)
 print(detection[(detection$event),])
 
-grf <- har_plot(model, data$serie1, detection)
+grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf <- grf + font
 

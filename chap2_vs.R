@@ -2,8 +2,8 @@ source("header.R")
 library(tseries)
 library(TSPred)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
 
 
@@ -20,7 +20,7 @@ nonstationary.test <- function(serie) {
                     bp = round(bp.test(serie)$p.value, 2)))
 }
 
-y <- data$temperature
+y <- data$serie
 
 #log
 y_transformed <- TSPred::LogT(y)

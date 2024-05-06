@@ -2,19 +2,15 @@ source("header.R")
 library(daltoolbox)
 library(harbinger)
 
-# Load necessary libraries
+# loading example
+load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_changepoints.RData"))
+data <- examples_changepoints$complex
 
-# Generate synthetic time series data with a change point
-set.seed(1)
-n <- 100  # Number of time points
-data <- c(sin((1:n)/pi), 2*sin((1:n)/pi), 10 + sin((1:n)/pi), 10-10/n*(1:n)+sin((1:n)/pi)/2, sin((1:n)/pi)/2)
-event <- rep(FALSE, n)
+model <- fit(harbinger(), data$serie)
+detection <- detect(model, data$serie)
 
-model <- fit(harbinger(), data)
-detection <- detect(model, data)
-
-grf <- har_plot(model, data, detection)
-grf <- grf + scale_x_continuous(breaks = seq(0, length(data), by = length(data)/5), "example")
+grf <- har_plot(model, data$serie, detection)
+grf <- grf + scale_x_continuous(breaks = seq(0, length(data$serie), by = length(data$serie)/5), "example")
 grf <- grf + annotate(geom="text", x=50, y=12.5, label="A", color="black")
 grf <- grf + geom_vline(xintercept = 100, col="darkgray", linewidth = 0.5, linetype="dashed")
 grf <- grf + annotate(geom="text", x=111, y=11.8, label="cp[AB]", color="black", parse=TRUE)

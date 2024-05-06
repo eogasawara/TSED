@@ -2,14 +2,14 @@ source("header.R")
 options(scipen=999)
 library(ggpmisc)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
 
 #loading DAL
 library(daltoolbox)
 
-x <- temp_yearly$temperature
+x <- data$serie
 sw_size <- 10
 ts <- ts_data(x, sw_size)
 ts_head(ts, 3)

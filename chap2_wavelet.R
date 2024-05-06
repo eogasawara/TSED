@@ -3,11 +3,11 @@ library(forecast)
 library(TSPred)
 options(scipen=999)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
 
-y <- data$temperature
+y <- data$serie
 yts <- ts(y, start = c(1850, 1))
 xts <- time(yts)
 

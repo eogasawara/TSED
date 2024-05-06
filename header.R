@@ -14,6 +14,7 @@ save_png <- function(grf, filename, width, height) {
   mypng(filename, width = width, height = height) 
   plot(grf)
   dev.off() 
+  plot(grf)
 }
 
 save_pdf <- function(grf, filename, width, height) {

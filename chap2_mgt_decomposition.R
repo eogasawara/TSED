@@ -1,14 +1,14 @@
 source("header.R")
 library(dplyr)
-load("data/noaa-global/temp_monthly.RData")
-data <- temp_monthly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_monthly
 data$event <- FALSE
 
 library(forecast)
 
-data <- data |> dplyr::filter(x > as.Date("1970-01-01"))
+data <- data |> dplyr::filter(i > as.Date("1970-01-01"))
 
-ts_data <- ts(data$temperature, frequency = 12, start = c(1970, 1))
+ts_data <- ts(data$serie, frequency = 12, start = c(1970, 1))
 
 # Perform a seasonal decomposition to separate the trend, seasonal, and random components of the time series
 decomp <- decompose(ts_data)

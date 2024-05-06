@@ -1,19 +1,17 @@
 source("header.R")
 library(forecast)
 library(harbinger)
-data(har_examples)
 
-
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
-serie <- data$temperature
+serie <- data$serie
 
-serie_a <- har_examples[[9]]$serie[1:200]
-serie_b <- har_examples[[9]]$serie[201:400]
-serie_c <- har_examples[[9]]$serie[401:600]
-serie_d <- har_examples[[9]]$serie[601:800]
-serie_e <- har_examples[[9]]$serie[801:1000]
+serie_a <- examples_harbinger$nonstationarity$serie[1:200]
+serie_b <- examples_harbinger$nonstationarity$serie[201:400]
+serie_c <- examples_harbinger$nonstationarity$serie[401:600]
+serie_d <- examples_harbinger$nonstationarity$serie[601:800]
+serie_e <- examples_harbinger$nonstationarity$serie[801:1000]
 
 grf <- ggAcf(serie_a)
 grf <- grf + theme_bw(base_size = 10)
@@ -86,3 +84,4 @@ mypng(file="figures/chap2_acf.png", width = 1600, height = 1260) #144 #720*1.75
 gridExtra::grid.arrange(grfaa, grfab, grfac, grfad, grfae, grfaf,
                         layout_matrix = matrix(c(1,1,2,2,3,3,4,4,5,5,6,6), byrow = TRUE, ncol = 4))
 dev.off()  
+

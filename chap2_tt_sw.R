@@ -3,8 +3,8 @@ options(scipen=999)
 library(ggpmisc)
 library(daltoolbox)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 
 ats <- function(y) {
   yts <- ts(y, frequency=1, start = c(2000, 1))
@@ -16,7 +16,7 @@ data <- data[(nrow(data)-23+1):nrow(data),]
 colorsg <- brewer.pal(9, 'Greys')
 test_size <- 4
 
-y <- ats(data$temperature)
+y <- ats(data$serie)
 x <- time(y)
 obj <- smoothing_freq(n = 9) 
 obj <- daltoolbox::fit(obj, y)

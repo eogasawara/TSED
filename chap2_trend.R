@@ -1,8 +1,8 @@
 source("header.R")
 library(tseries)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
 
 bp.test <- function(serie) {
@@ -18,7 +18,7 @@ nonstationary.test <- function(serie) {
                     bp = round(bp.test(serie)$p.value, 2)))
 }
 
-tsdata <- ts(data$temperature, start = c(1850, 1))
+tsdata <- ts(data$serie, start = c(1850, 1))
 model <- lm(tsdata ~ time(tsdata))
 grf <- autoplot(tsdata, col="black")
 grf <- grf + theme_bw(base_size = 10)

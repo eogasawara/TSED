@@ -4,15 +4,15 @@ library(ggpmisc)
 
 library(daltoolbox)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 
 ats <- function(y) {
   yts <- ts(y, frequency=1, start = c(1850, 1))
   return(yts)  
 }
 
-y <- ats(data$temperature)
+y <- ats(data$serie)
 x <- time(y)
 
 sw_size <- 5

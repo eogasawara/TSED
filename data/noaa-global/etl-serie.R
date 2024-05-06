@@ -14,12 +14,12 @@ temp_monthly <- data |>
   filter(Date < 202300) |>
   select(x = Date, temperature = Value)
 
-temp_monthly$temperature <- temp_monthly$temperature + 13.9
+examples_harbinger$global_temperature_monthly <- examples_harbinger$global_temperature_monthly + 13.9
 
 temp_yearly <- temp_monthly
 
-temp_monthly$x <-  as.Date(sprintf("%d-%02d-01", as.integer(temp_monthly$x / 100), temp_monthly$x %% 100))
-temp_yearly$x <-  as.Date(sprintf("%d-01-01", as.integer(temp_yearly$x / 100)))
+temp_monthly$i <-  as.Date(sprintf("%d-%02d-01", as.integer(temp_monthly$i / 100), temp_monthly$i %% 100))
+temp_yearly$i <-  as.Date(sprintf("%d-01-01", as.integer(temp_yearly$i / 100)))
 
 temp_yearly <- temp_yearly |> group_by(x) |> summarise(temperature = mean(temperature)) 
 

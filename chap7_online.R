@@ -2,20 +2,20 @@ source("header.R")
 library(daltoolbox)
 library(harbinger)
 
-load("data/noaa-global/temp_monthly.RData")
-temp_monthly$year <- as.numeric(format(temp_monthly$x,'%Y'))
+data(examples_harbinger)
+temp_monthly$year <- as.numeric(format(temp_monthly$i,'%Y'))
 data$event <- FALSE
 
 for (i in 1851:2022) { 
   model <- hanr_arima()
-  data <- temp_monthly
-  data$temperature[data$year > i] <- NA
-  model <- fit(model, data$temperature)
-  detection <- detect(model, data$temperature)
+  data <- examples_harbinger$global_temperature_monthly
+  data$serie[data$year > i] <- NA
+  model <- fit(model, data$serie)
+  detection <- detect(model, data$serie)
   detection$year <- i
-  detection$temperature <- data$temperature
+  detection$temperature <- data$serie
   
-  grf <- har_plot(model, data$temperature, detection, data$event, idx = data$x) +
+  grf <- har_plot(model, data$serie, detection, data$event, idx = data$i) +
     font + 
     scale_x_date(breaks = "10 years",  date_labels = "%Y",  limits = c(as.Date("1850-01-01"), as.Date("2030-01-01"))) +
     scale_y_continuous(limits = c(13, 15.5)) +

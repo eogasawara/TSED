@@ -2,16 +2,15 @@ source("header.R")
 library(daltoolbox)
 library(harbinger)
 
-set.seed(1)
-n <- 100  # Number of time points
-data <- c(sin((1:n)/pi), 2*sin((1:n)/pi), 10 + sin((1:n)/pi), 10-10/n*(1:n)+sin((1:n)/pi)/2, sin((1:n)/pi)/2)
-event <- rep(FALSE, n)
+# loading example
+load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_changepoints.RData"))
+data <- examples_changepoints$complex
 
-model <- fit(hcp_cf_arima(sw_size = 30), data)
-detection <- detect(model, data)
+model <- fit(hcp_cf_arima(sw_size = 30), data$serie)
+detection <- detect(model, data$serie)
 print(detection$idx[detection$event])
 
-grf <- har_plot(model, data, detection)
+grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf <- grf + font
 

@@ -3,12 +3,12 @@ options(scipen=999)
 library(ggpmisc)
 library(daltoolbox)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 
 data <- data[(nrow(data)-23+1):nrow(data),]
 
-y <- data$temperature
+y <- data$serie
 n <- length(y)
 
 obj <- smoothing_freq(n = 9)  

@@ -3,11 +3,11 @@ options(scipen=999)
 library(ggpmisc)
 library(daltoolbox)
 
-load("data/noaa-global/temp_yearly.RData")
-data <- temp_yearly
+data(examples_harbinger)
+data <- examples_harbinger$global_temperature_yearly
 data$event <- FALSE
 
-ts <- ts_data(data$temperature, 0)
+ts <- ts_data(data$serie, 0)
 
 test_size <- 4
 samp <- ts_sample(ts, test_size)
@@ -39,7 +39,7 @@ print(head(ev_test$metrics))
 yvalues <- c(io_train$output, io_test$output)
 
 params <- attr(model, "params")
-temperature <- data$temperature[-c(1:100)]
+temperature <- data$serie[-c(1:100)]
 adjust <- adjust[-c(1:100)]
 yts <- ts(temperature, frequency=1, start = c(1950, 1))
 yhat <- ts(c(adjust, prediction), frequency=1, start = c(1950, 1))
@@ -70,7 +70,7 @@ io_train_fit <- ts_projection(ts)
 model_fit <- daltoolbox::fit(model_fit, x=io_train_fit$input, y=io_train_fit$output)
 adjust_fit <- predict(model_fit, io_train_fit$input)
 params_fit <- attr(model_fit, "params")
-temperature <- data$temperature[-c(1:100)]
+temperature <- data$serie[-c(1:100)]
 adjust_fit <- adjust_fit[-c(1:100)]
 yts_fit <- ts(temperature, frequency=1, start = c(1950, 1))
 yhat_fit <- ts(adjust_fit, frequency=1, start = c(1950, 1))
