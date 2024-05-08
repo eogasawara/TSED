@@ -25,4 +25,4 @@ print(detection[detection$event,])
 grf <- har_plot(model, data$serie, detection, data$event) +
   font + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-save_png(grf, "figures/chap1_arr_motif.png", 1280, 720)
+save_png(grf, "figures/chap1_labeled_motif.png", 1280, 720)
