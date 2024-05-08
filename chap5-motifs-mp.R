@@ -1,8 +1,8 @@
 source("header.R")
 library(daltoolbox)
 library(harbinger)
-source("hmo_mp.R")
-source("har_plot.R")
+source("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/R/hmo_mp.R")
+source("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/R/har_plot.R")
 
 #loading the example database
 load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_motifs.RData"))
@@ -12,7 +12,6 @@ data$event <- FALSE
 
 model <- fit(hmo_mp(mode = "stomp", w = 25, qtd = 10), data$serie)
 detection <- detect(model, data$serie)
-#detection$event[detection$seq > 1] <- FALSE
 print(detection[detection$event,])
 
 grf <- har_plot(model, data$serie, detection)
