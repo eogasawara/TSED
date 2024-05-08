@@ -1,7 +1,7 @@
 source("header.R")
 library(daltoolbox)
 library(harbinger)
-source("hmo_sax.R")
+source("hdis_sax.R")
 source("har_plot.R")
 
 #loading the example database
@@ -10,7 +10,7 @@ data <- examples_motifs$mitdb102
 rownames(data) <- 1:nrow(data)
 data$event <- FALSE
 
-model <- hmo_sax(26, 25)
+model <- hdis_sax(26, 25)
 model <- fit(model, data$serie)
 detection <- detect(model, data$serie)
 print(detection[detection$event,])
@@ -18,5 +18,5 @@ print(detection[detection$event,])
 grf <- har_plot(model, data$serie, detection)
 grf <- grf + font
 
-save_png(grf, "figures/chap5_motifs_sax.png", 1280, 720)
+save_png(grf, "figures/chap5_discords_sax.png", 1280, 720)
 

@@ -1,7 +1,7 @@
 source("header.R")
 library(daltoolbox)
 library(harbinger)
-source("hmo_discord.R")
+source("hdis_mp.R")
 source("har_plot.R")
 
 #loading the example database
@@ -10,10 +10,9 @@ data <- examples_motifs$mitdb102
 rownames(data) <- 1:nrow(data)
 data$event <- FALSE
 
-model <- fit(hmo_discord(mode = "pmp", w = 200, qtd = 10), data$serie)
+model <- fit(hdis_mp(mode = "stomp", w = 25, qtd = 10), data$serie)
 detection <- detect(model, data$serie)
 print(detection[detection$event,])
-detection$seq[6218] <- 2
 
 grf <- har_plot(model, data$serie, detection)
 grf <- grf + font
