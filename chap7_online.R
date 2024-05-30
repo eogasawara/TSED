@@ -3,12 +3,13 @@ library(daltoolbox)
 library(harbinger)
 
 data(examples_harbinger)
-#temp_monthly$year <- as.numeric(format(temp_monthly$i,'%Y'))
-data$event <- FALSE
+monthly_data <- examples_harbinger$global_temperature_monthly
+monthly_data$year <- as.numeric(format(monthly_data$i,'%Y'))
+#data$event <- FALSE
 
 for (i in 1851:2022) { 
   model <- hanr_arima()
-  data <- examples_harbinger$global_temperature_monthly
+  data <- monthly_data
   data$serie[data$year > i] <- NA
   model <- fit(model, data$serie)
   detection <- detect(model, data$serie)
@@ -29,6 +30,7 @@ save_png(grf, "figures/chap7_offline.png", 1280, 720)
 library(gifski) # apt-get install cargo 
 
 png_files <- list.files("temp/", pattern = ".*png$", full.names = TRUE)
+png_files <- sort(png_files)
 output <- "figures/chap7_online.gif"
 gifski(png_files, gif_file = output, width = 1280, height = 720, delay = 0.1)
 
