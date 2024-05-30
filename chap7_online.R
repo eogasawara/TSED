@@ -3,7 +3,7 @@ library(daltoolbox)
 library(harbinger)
 
 data(examples_harbinger)
-temp_monthly$year <- as.numeric(format(temp_monthly$i,'%Y'))
+#temp_monthly$year <- as.numeric(format(temp_monthly$i,'%Y'))
 data$event <- FALSE
 
 for (i in 1851:2022) { 
