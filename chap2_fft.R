@@ -79,7 +79,7 @@ plot(grfb)
 
 yhat <- fft_harmonics(y, harmonics)
 print(c(harmonics, sum(abs(y-yhat))))
-tolerance <- 30
+tolerance <- ceiling(0.03*length(yts))
 
 grf <- autoplot(ts(yts, start = c(1850, 1)))
 grf <- grf + theme_bw(base_size = 10)

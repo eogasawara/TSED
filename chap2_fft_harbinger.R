@@ -1,8 +1,6 @@
 source("header.R")
 library(harbinger)
 options(scipen=999)
-library(forecast)
-options(scipen=999)
 
 data(examples_harbinger)
 data <- examples_harbinger$global_temperature_yearly
@@ -12,20 +10,33 @@ y <- data$serie
 yts <- ts(y, start = c(1850, 1))
 xts <- time(yts)
 
-wt <- wavelets::modwt(yts, filter="haar", boundary="periodic")
+compute_cut_index <- function(freqs) {
+  cutindex <- which.max(freqs)
+  if (min(freqs) != max(freqs)) {
+    threshold <- mean(freqs) + 2.698 * sd(freqs)
+    freqs[freqs < threshold] <- min(freqs) + max(freqs)
+    cutindex <- which.min(freqs)
+  }
+  return(cutindex)
+}
 
-V <- as.data.frame(wt@V)
-W <- as.data.frame(wt@W)
+fft_signal <- stats::fft(yts)
 
-#for (i in 1:length(wt@V)) {
-#  wt@V[[i]] <- as.matrix(rep(0, length(wt@V[[i]])), ncol=1)
-#}
+spectrum <- base::Mod(fft_signal) ^ 2
+half_spectrum <- spectrum[1:(length(yts) / 2 + 1)]
 
-#iwt <- wavelets::imodwt(wt)
+cutindex <- compute_cut_index(half_spectrum)
+print(cutindex)
+n <- length(fft_signal)
 
-yhat <- apply(V, 1, mean)
+fft_signal[1:cutindex] <- 0
+fft_signal[(n - cutindex):n] <- 0
 
-residual <- -apply(W, 1, mean)
+
+residual <- - base::Re(stats::fft(fft_signal, inverse = TRUE) / n)
+
+yhat <- yts - residual
+
 
 grf <- autoplot(ts(yts, start = c(1850, 1)))
 grf <- grf + theme_bw(base_size = 10)
@@ -37,7 +48,7 @@ grf <- grf + geom_point(aes(y=yts),size = 0.5, col="black")
 grf <- grf + geom_line(aes(y=yhat), linetype = "dashed", col="darkblue") 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
-grfa <- grf
+grfc <- grf
 plot(grf)
 
 grf <- autoplot(ts(residual, start = c(1850, 1)))
@@ -47,37 +58,14 @@ grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor 
 grf <- grf + ylab("residual")
 grf <- grf + xlab("time")
 grf <- grf + geom_point(size = 0.5, col="black") 
+grf <- grf + labs(caption = sprintf("(d)")) 
 grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grf <- grf  + font
-grfb <- grf
-plot(grf)
+grfd <- grf
+plot(grfd)
 
-mypng(file="figures/chap2_wavelet.png", width = 1280, height = 1080) 
-gridExtra::grid.arrange(grfa, grfb,
+mypng(file = "figures/chap2_fft_harbinger.png", width = 1280, height=1080)
+gridExtra::grid.arrange(grfc, grfd, 
                         layout_matrix = matrix(c(1,2), byrow = TRUE, ncol = 1))
 dev.off() 
-
-wt <- wavelets::modwt(yts, filter="haar", boundary="periodic")
-
-V <- as.data.frame(wt@V)
-W <- as.data.frame(wt@W)
-
-n.ahead <- 5
-V_pred <- lapply(V, function(comp) forecast(auto.arima(comp), h=n.ahead)$mean)
-W_pred <- lapply(W, function(comp) forecast(auto.arima(comp), h=n.ahead)$mean)
-
-for (i in 1:wt@level) {
-  wt@W[[i]] <- as.matrix(c(wt@W[[i]],W_pred[[i]]))
-  wt@V[[i]] <- as.matrix(c(wt@V[[i]],V_pred[[i]]))
-}
-
-newseries <- c(wt@series,rep(NA,n.ahead))
-wt@series <- as.matrix(newseries)
-wt@attr.X <- attributes(stats::ts(newseries))
-iwt <- wavelets::imodwt(wt)
-#gets prediction time series
-pred <- stats::ts(utils::tail(iwt,n.ahead),start=(length(iwt)-n.ahead+1))
-
-ny <- c(yts, pred)
-autoplot(ts(ny))
 

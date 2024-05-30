@@ -88,7 +88,7 @@ grfAuto <-ggplot(data, aes(x=i, y=autoencoder)) +
   theme_classic()
 
 
-mypng(file="figures/chap4_autoenconder3d.png", width=1280, height=1440) 
+mypng(file="figures/chap4_multivariate_autoencoder3d.png", width=1280, height=1440) 
 gridExtra::grid.arrange(grfA, grfB, grfC, grfAuto, 
                         layout_matrix = matrix(c(1,2,3,4), byrow = TRUE, ncol = 1))
 dev.off() 
