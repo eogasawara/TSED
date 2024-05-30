@@ -2,11 +2,8 @@ source("header.R")
 library(daltoolbox)
 library(harbinger)
 
-source("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/R/hdis_sax.R")
-source("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/R/har_plot.R")
-
 #loading the example database
-load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_motifs.RData"))
+data(examples_motifs)
 data <- examples_motifs$mitdb102
 rownames(data) <- 1:nrow(data)
 data$event <- FALSE

@@ -4,7 +4,7 @@ library(harbinger)
 
 source(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/develop/hcd_page_hinkley.R"))
 
-load(url("https://raw.githubusercontent.com/cefet-rj-dal/harbinger/master/data/examples_changepoints.RData"))
+data(examples_changepoints)
 data <- examples_changepoints$complex
 data$event <- NULL
 
