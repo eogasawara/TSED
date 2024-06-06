@@ -9,12 +9,12 @@ data$event <- NULL
 data$prediction <- examples_changepoints$complex$serie > 4
 
 
-model <- dfr_page_hinkley(target_feat = 'serie')
+model <- dfr_hddm()
 
 detection <- c()
 output <- list(obj=model, pred=FALSE)
-for (i in 1:length(data$serie)){
-  output <- update_state(output$obj, data$serie[i])
+for (i in 1:length(data$prediction)){
+  output <- update_state(output$obj, data$prediction[i])
   if (output$pred){
     type <- 'changepoint'
     output$obj <- reset_state(output$obj)
@@ -30,4 +30,4 @@ grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf
 
-save_png(grf, "figures/chap4_page_hinkley.png", 1280, 720)
+save_png(grf, "figures/chap4_hddm.png", 1280, 720)

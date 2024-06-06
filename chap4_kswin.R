@@ -9,7 +9,7 @@ data$event <- NULL
 data$prediction <- examples_changepoints$complex$serie > 4
 
 
-model <- dfr_page_hinkley(target_feat = 'serie')
+model <- dfr_kswin(target_feat = 'serie')
 
 detection <- c()
 output <- list(obj=model, pred=FALSE)
@@ -30,4 +30,4 @@ grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf
 
-save_png(grf, "figures/chap4_page_hinkley.png", 1280, 720)
+save_png(grf, "figures/chap4_kswin.png", 1280, 720)

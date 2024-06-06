@@ -4,9 +4,9 @@ library(harbinger)
 
 # loading example
 data(examples_changepoints)
-data <- examples_changepoints$complex
+data <- examples_changepoints$simple
 
-model <- fit(hcp_cf_arima(sw_size = 30), data$serie)
+model <- fit(hcp_cf_lr(sw_size = 10), data$serie)
 detection <- detect(model, data$serie)
 print(detection$idx[detection$event])
 
