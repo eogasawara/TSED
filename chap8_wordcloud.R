@@ -28,7 +28,8 @@ plot_cloud <- function(data, stops=NULL) {
   return(df)
 }
 
-png(filename="figures/chap8_wordcloud.png", width = 800, height = 800)
+pdf("figures/chap8_wordcloud.pdf", width = 9.1, height = 8.75)
+#png(filename="figures/chap8_wordcloud.png", width = 800, height = 800)
 par(mfrow=c(2,2)) # for 2 row, 2 cols
 
 load("data/references/event_detection.RData")

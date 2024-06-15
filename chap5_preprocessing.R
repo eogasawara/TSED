@@ -1,8 +1,35 @@
-library(tsmp)
-
 source("header.R")
 options(scipen=999)
 library(ggpmisc)
+library(tsmp)
+library(daltoolbox)
+library(harbinger)
+
+plot_ts <- function (x = NULL, y, label_x = "", label_y = "", color = "black", size=1) 
+{
+  y <- as.vector(y)
+  if (is.null(x)) 
+    x <- 1:length(y)
+  grf <- ggplot() + geom_point(aes(x = x, y = y), color = color, size=size) + 
+    geom_line(aes(x = x, y = y), color = color)
+  grf <- grf + xlab(label_x)
+  grf <- grf + ylab(label_y)
+  grf <- grf + theme_bw(base_size = 10)
+  grf <- grf + theme(panel.grid.major = element_blank()) + 
+    theme(panel.grid.minor = element_blank())
+  grf <- grf + theme(legend.title = element_blank()) + theme(legend.position = "bottom") + 
+    theme(legend.key = element_blank())
+  return(grf)
+}
+
+
+paa <- function(v, n) {
+  data <- ts_data(v, n)
+  vx <- apply(data, 1, mean, na.rm=TRUE)
+  pos <- (1:length(vx) %% n)
+  vx <- vx[pos == pos[1]]
+  return(vx)
+}
 
 binning_sax <- function(v, a) {
   p <- seq(from = 0, to = 1, by = 1/a)
@@ -16,7 +43,7 @@ binning_sax <- function(v, a) {
 }
 
 norm_data <- function(data, x) {
-  data <- data.frame(temperature = data)
+  data <- data.frame(serie = data)
   norm <- zscore()
   norm <- fit(norm, data)
   data <- transform(norm, data)
@@ -24,50 +51,50 @@ norm_data <- function(data, x) {
   return(data)
 }
 
-data(examples_harbinger)
+data(examples_motifs)
+data <- examples_motifs$mitdb102
 
-temp_monthly <- examples_harbinger$global_temperature_monthly
-temp_yearly <- examples_harbinger$global_temperature_yearly
+data_n <- paa(data$serie, 1)
+i_n <- 1:length(data_n)
 
 
-ts_data_m <- ts(temp_monthly$serie, frequency=12, start = c(1850, 1))
+data_n_n <- norm_data(data_n, i_n)
 
-ts_data <- ts(temp_yearly$serie, frequency=1, start = c(1850, 1))
+mybin_n_n <- binning_sax(data_n_n$serie, 5)
 
-data_m <- norm_data(ts_data_m, temp_monthly$i)
-mybin_m <- binning_sax(data_m$temperature, 3)
+data_paa <- paa(data$serie, 20)
+i_paa <- 1:length(data_paa)
 
-grf <- plot_ts(x = data_m$x, y = data_m$temperature) + font
-grf <- grf + scale_x_date(breaks = "10 years",  date_labels = "%Y",  limits = c(as.Date("1850-01-01"), as.Date("2030-01-01")))
+data_paa_n <- norm_data(data_paa, i_paa)
+
+mybin_paa_n <- binning_sax(data_paa_n$serie, 5)
+
+grf <- plot_ts(x = data_n_n$x, y = data_n_n$serie, size=0.5) + font
 grf <- grf + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-grf <- grf + geom_hline(yintercept = mybin_m$q[2], col="black", size = 0.5, linetype="dashed")
-grf <- grf + geom_hline(yintercept = mybin_m$q[3], col="black", size = 0.5, linetype="dashed")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-1.1, label="A", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-0.25, label="B", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y= 0.6, label="C", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('1940-01-01'), y=-2, label="(a)", color="black")
-grf <- grf + ylim(-2, 3)
-grf$layers[[1]]$aes_params$size <- 0.25
+grf <- grf + annotate(geom="text", x=-200, y=(mybin_n_n$q[1]+mybin_n_n$q[2])/2, label=" ", color="black")
+grf <- grf + annotate(geom="text", x=-400, y=(mybin_n_n$q[2]+mybin_n_n$q[3])/2, label=" ", color="black")
+grf <- grf + annotate(geom="text", x=-200, y=(mybin_n_n$q[3]+mybin_n_n$q[4])/2, label=" ", color="black")
+grf <- grf + annotate(geom="text", x=-400, y=(mybin_n_n$q[4]+mybin_n_n$q[5])/2, label=" ", color="black")
+grf <- grf + annotate(geom="text", x=-200, y=(mybin_n_n$q[5]+mybin_n_n$q[6])/2, label=" ", color="black")
 grfA <- grf
+plot(grfA)
 
 
-data <- norm_data(ts_data, temp_yearly$i)
-mybin <- binning_sax(data$temperature, 3)
-
-grf <- plot_ts(x = data$x, y = data$temperature) + font
-grf <- grf + scale_x_date(breaks = "10 years",  date_labels = "%Y",  limits = c(as.Date("1850-01-01"), as.Date("2030-01-01")))
+grf <- plot_ts(x = data_paa_n$x, y = data_paa_n$serie, size=0.5) + font
 grf <- grf + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-grf <- grf + geom_hline(yintercept = mybin$q[2], col="black", size = 0.5, linetype="dashed")
-grf <- grf + geom_hline(yintercept = mybin$q[3], col="black", size = 0.5, linetype="dashed")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-1.1, label="A", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y=-0.25, label="B", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('2028-01-01'), y= 0.6, label="C", color="black")
-grf <- grf + annotate(geom="text", x=as.Date('1940-01-01'), y=-2, label="(b)", color="black")
-grf <- grf + ylim(-2, 3)
-grf$layers[[1]]$aes_params$size <- 0.25
+grf <- grf + geom_hline(yintercept = mybin_paa_n$q[1], col="black", size = 0.5, linetype="dashed")
+grf <- grf + geom_hline(yintercept = mybin_paa_n$q[2], col="black", size = 0.5, linetype="dashed")
+grf <- grf + geom_hline(yintercept = mybin_paa_n$q[3], col="black", size = 0.5, linetype="dashed")
+grf <- grf + geom_hline(yintercept = mybin_paa_n$q[4], col="black", size = 0.5, linetype="dashed")
+grf <- grf + geom_hline(yintercept = mybin_paa_n$q[5], col="black", size = 0.5, linetype="dashed")
+grf <- grf + annotate(geom="text", x=-10, y=(mybin_paa_n$q[1]+mybin_paa_n$q[2])/2, label="A", color="black")
+grf <- grf + annotate(geom="text", x=-20, y=(mybin_paa_n$q[2]+mybin_paa_n$q[3])/2, label="B", color="black")
+grf <- grf + annotate(geom="text", x=-10, y=(mybin_paa_n$q[3]+mybin_paa_n$q[4])/2, label="C", color="black")
+grf <- grf + annotate(geom="text", x=-20, y=(mybin_paa_n$q[4]+mybin_paa_n$q[5])/2, label="D", color="black")
+grf <- grf + annotate(geom="text", x=-10, y=(mybin_paa_n$q[5]+mybin_paa_n$q[6])/2, label="E", color="black")
 grfB <- grf
+plot(grfB)
 
-
-mypng(file="figures/chap5_preprocessing.png", width = 1280, height = 480) #144 #720*1.75
-gridExtra::grid.arrange(grfA, grfB, layout_matrix = matrix(c(1,2), byrow = TRUE, ncol = 2))
+mypng(file="figures/chap5_preprocessing.png", width = 1280, height = 1260) #144 #720*1.75
+gridExtra::grid.arrange(grfA, grfB, layout_matrix = matrix(c(1,2), byrow = TRUE, ncol = 1))
 dev.off()  
