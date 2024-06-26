@@ -8,10 +8,9 @@ data <- examples_changepoints$complex
 data$event <- NULL
 data$prediction <- examples_changepoints$complex$serie > 4
 
-
 model <- dfr_ddm()
 
-detection <- c()
+detection <- NULL
 output <- list(obj=model, pred=FALSE)
 for (i in 1:length(data$prediction)){
   output <- update_state(output$obj, data$prediction[i])
@@ -21,10 +20,8 @@ for (i in 1:length(data$prediction)){
   }else{
     type <- ''
   }
-  detection <- rbind(detection, list(idx=i, event=output$pred, type=type))
+  detection <- rbind(detection, data.frame(idx=i, event=output$pred, type=type))
 }
-
-detection <- as.data.frame(detection)
 
 grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")

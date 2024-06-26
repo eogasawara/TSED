@@ -1,4 +1,8 @@
 source("header.R")
+options(scipen=999)
+library(ggpmisc)
+library(daltoolbox)
+library(harbinger)
 
 set.seed(1)
 n <- 100  # Number of time points
@@ -31,4 +35,4 @@ grf <- grf + geom_smooth(aes(xa,dataa), color = "red", method=lm, se=FALSE, size
 grf <- grf + annotate(geom="text", x=14.5, y=22.5, label="regression after change point", color="red")
 #plot(grf)
 
-save_png(grf, "backup/chap4_cp.png", 1280, 720)
+save_png(grf, "figures/chap4_scp_principle.png", 1280, 720)

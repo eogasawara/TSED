@@ -60,11 +60,11 @@ grf_base <- grf_base + labs( x = "time", y = "values")
 model <- hcp_amoc()
 grf_amoc <- event_plot(model, dataset$serie, dataset$event, "AMOC")
 
-model <- hcp_pelt()
-grf_pelt <- event_plot(model, dataset$serie, dataset$event, "PELT")
-
 model <- hcp_binseg(Q = 10)
 grf_binseg <- event_plot(model, dataset$serie, dataset$event, "BinSeg")
+
+model <- hcp_pelt()
+grf_pelt <- event_plot(model, dataset$serie, dataset$event, "PELT")
 
 model <- hcp_chow()
 grf_chow <- event_plot(model, dataset$serie, dataset$event, "Chow test")
@@ -79,7 +79,7 @@ model <- hcp_cf_arima(sw_size = 30)
 grf_cf_arima <- event_plot(model, dataset$serie, dataset$event, "CF(ARIMA)")
 
 
-grf <- wrap_plots(grf_base, grf_amoc, grf_pelt, grf_binseg, grf_chow, grf_gft, grf_scp, grf_cf_arima,
+grf <- wrap_plots(grf_base, grf_amoc, grf_binseg, grf_pelt, grf_chow, grf_gft, grf_scp, grf_cf_arima,
                                   ncol = 1,   widths = c(1,1), heights = c(6, 1, 1, 1, 1, 1, 1, 1))
 
 save_png(grf, "figures/chap4_change_point.png", 1280, 1584)
