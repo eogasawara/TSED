@@ -82,7 +82,7 @@ grfPCA <-ggplot(data, aes(x=i, y=pca)) +
   theme_classic()
 
 
-mypng(file="figures/chap4_multivariate_pca.png", width=1280, height=1080) 
+mypng(file="new/chap4_multivariate_pca.png", width=1280, height=1080) 
 gridExtra::grid.arrange(grfA, grfB, grfPCA,
                         layout_matrix = matrix(c(1,2,3), byrow = TRUE, ncol = 1))
 dev.off() 

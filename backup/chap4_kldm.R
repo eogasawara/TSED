@@ -3,8 +3,6 @@ library(daltoolbox)
 library(harbinger)
 library(heimdall)
 
-source('https://raw.githubusercontent.com/cefet-rj-dal/heimdall/main/R/dfr_kldist.R')
-
 data(examples_changepoints)
 data <- examples_changepoints$complex
 data$event <- NULL
@@ -32,4 +30,4 @@ grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf
 
-save_png(grf, "figures/chap4_kldm.png", 1280, 720)
+save_png(grf, "backup/chap4_kldm.png", 1280, 720)

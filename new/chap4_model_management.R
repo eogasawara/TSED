@@ -39,4 +39,4 @@ grf <- ggplot(data, aes(x=x, y=y)) +
   annotate(geom="text", x=10.9, y=0.1, label="?M", color="black", parse = TRUE) +    
   theme_classic()
 
-save_png(grf, "figures/chap4_model_management.png", 1280, 720)
+save_png(grf, "new/chap4_model_management.png", 1280, 720)

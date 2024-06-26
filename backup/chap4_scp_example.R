@@ -31,4 +31,4 @@ grf <- grf + geom_smooth(aes(xa,dataa), color = "red", method=lm, se=FALSE, size
 grf <- grf + annotate(geom="text", x=14.5, y=22.5, label="regression after change point", color="red")
 #plot(grf)
 
-save_png(grf, "figures/chap4_cp.png", 1280, 720)
+save_png(grf, "backup/chap4_cp.png", 1280, 720)

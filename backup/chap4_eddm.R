@@ -30,4 +30,4 @@ grf <- har_plot(model, data$serie, detection)
 grf <- grf + ylab("value")
 grf
 
-save_png(grf, "figures/chap4_eddm.png", 1280, 720)
+save_png(grf, "backup/chap4_eddm.png", 1280, 720)

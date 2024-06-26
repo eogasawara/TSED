@@ -3,11 +3,7 @@ library(daltoolbox)
 library(harbinger)
 library(heimdall)
 
-
-source_python('seed.py')
 set.seed(1)
-seed_everything(1)
-
 n <- 500  # Number of time points
 example_type='multivariate'
 # Multivariate Example
@@ -66,29 +62,40 @@ model <- fit(hcp_chow(), data$serie3)
 detection <- detect(model, data$serie3)
 print(detection$idx[detection$event])
 
-
 grfC <- ggplot(data, aes(x=i, y=serie3)) +
   geom_line() +
   #geom_vline(xintercept = drift, linetype="dotted", color = "black", size=1) +
   #geom_vline(xintercept = detection$idx[detection$event], linetype="dotted", color = "red", size=1) +  
   theme_classic()
 
-auto <- autoenc_encode(3, 1)
-auto <- fit(auto, data[,1:3])
-autoencoder <- as.vector(transform(auto, data[,1:3]))
 
-model <- fit(hcp_chow(), autoencoder)
-detection <- detect(model, autoencoder)
+#Apply PCA
+
+# Standardize the data (mean-centered and scaled to unit variance)
+scaled_data <- base::scale(data[,1:3])
+
+# Perform PCA
+pca_result <- stats::princomp(scaled_data)
+
+pcs <- pca_result$scores
+loadings <- pca_result$loadings
+
+pca <- as.data.frame(pcs)$'Comp.1'
+
+
+model <- fit(hcp_chow(), pca)
+detection <- detect(model, pca)
 print(detection$idx[detection$event])
 
-grfAuto <-ggplot(data, aes(x=i, y=autoencoder)) +
+grfPCA <-ggplot(data, aes(x=i, y=pca)) +
   geom_line() +
   geom_vline(xintercept = drift, linetype="dotted", color = "black", size=1) +
   #geom_vline(xintercept = detection$idx[detection$event], linetype="dotted", color = "red", size=1) +  
   theme_classic()
 
 
-mypng(file="figures/chap4_multivariate_autoencoder3d.png", width=1280, height=1440) 
-gridExtra::grid.arrange(grfA, grfB, grfC, grfAuto, 
+mypng(file="new/chap4_multivariate_pca3d.png", width=1280, height=1440) 
+gridExtra::grid.arrange(grfA, grfB, grfC, grfPCA, 
                         layout_matrix = matrix(c(1,2,3,4), byrow = TRUE, ncol = 1))
 dev.off() 
+
