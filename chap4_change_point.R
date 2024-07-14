@@ -10,6 +10,8 @@ event_plot <- function(model, serie, event, title) {
   
   model <- fit(model, serie)
   detection <- detect(model, serie)
+  detection$event[detection$type=="anomaly"] <- FALSE
+  detection$type[detection$type=="anomaly"] <- ""
   
   dataset  <- data.frame(col_TP_verde = logical(length(dataset$serie)), col_FN_blue = logical(length(dataset$serie)), col_FP_red = logical(length(dataset$serie)))
   
@@ -72,11 +74,11 @@ grf_chow <- event_plot(model, dataset$serie, dataset$event, "Chow test")
 model <- hcp_gft()
 grf_gft <- event_plot(model, dataset$serie, dataset$event, "GFT")
 
-model <- hcp_scp()
+model <- hcp_scp(sw_size = 60)
 grf_scp <- event_plot(model, dataset$serie, dataset$event, "SCP")
 
-model <- hcp_cf_arima(sw_size = 30)
-grf_cf_arima <- event_plot(model, dataset$serie, dataset$event, "CF(ARIMA)")
+model <- hcp_cf_ets(sw_size = 60)
+grf_cf_arima <- event_plot(model, dataset$serie, dataset$event, "CF(ETS)")
 
 
 grf <- wrap_plots(grf_base, grf_amoc, grf_binseg, grf_pelt, grf_chow, grf_gft, grf_scp, grf_cf_arima,
