@@ -1,34 +1,68 @@
 source("header.R")
-
 # Load necessary libraries
-library(ggplot2)
-library(ROCR)
+library(caret)
+library(PRROC)
+library(dplyr)
+library(patchwork)
 
-# Sample data
-true_labels <- c(0, 1, 1, 1, 1, 1, 0, 0, 0, 0)
-prob_positive <- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+actual_labels <- c(TRUE, TRUE, FALSE,  TRUE, TRUE, FALSE,  FALSE, FALSE,  TRUE, FALSE)
+ evt <-          c(0.9,  0.8,   0.7,   0.6,  0.55, 0.54,   0.53, 0.51,   0.5,   0.4)
+ 
+ actual_labels <- !actual_labels
+ evt <- 1 - evt
+ 
+ data <- data.frame(detect = evt >= 0.5, evt, actual_labels)
+ 
+ print(data)
+ 
+actual_labels <- as.integer(actual_labels) 
+ 
+predictions <- data.frame(evt)
+predicted_probs <- evt
 
-# Create a prediction object
-prediction <- prediction(prob_positive, true_labels)
+# Generate precision-recall curve
+pr <- pr.curve(scores.class0 = predicted_probs, weights.class0 = actual_labels, sorted = FALSE, curve = TRUE)
 
-# Calculate performance metrics
-roc_perf <- performance(prediction, "tpr", "fpr")
+# Plot precision-recall curve
+# plot(pr)
 
-# Create a data frame for the ROC curve
-roc_df <- data.frame(FPR = roc_perf@x.values[[1]], TPR = roc_perf@y.values[[1]])
+pr_df <- data.frame(recall = pr$curve[,1], precision = pr$curve[,2])
+pr_df <- pr_df |> group_by(recall) |> summarise(precision = max(precision))
 
-roc_df
-
-# Create the ROC curve using ggplot2
-grf <-ggplot(roc_df, aes(x = FPR, y = TPR))
+grf <-ggplot(pr_df, aes(x = recall, y = precision))
+grf <- grf + theme_minimal()
 grf <- grf + geom_line(color = "blue") 
-grf <- grf + annotate(geom="text", x=0.5, y=0.75, label="ROC curve", color="blue")
-grf <- grf + annotate(geom="text", x=0.15, y=0.9, label="perfect performance", color="darkgreen")
+grf <- grf + annotate(geom="text", x=0.5, y=1.025, label=sprintf("PR curve = %.2f", pr$auc.integral), color="blue")
+grf <- grf + annotate(geom="text", x=0.5, y=0.975, label="skilled method", color="darkgreen")
+grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
+grf <- grf + annotate(geom="text", x=0.5, y=0.525, label="unskilled method", color="red")
+grf <- grf + geom_segment(aes(x = 0, y = 0.5, xend = 1, yend = 0.5), col="red", linewidth = 0.5, linetype="dashed")
+grfPR <- grf
+plot(grfPR)
+
+proc <- roc.curve(scores.class0 = predicted_probs, weights.class0 = actual_labels, sorted = FALSE, curve = TRUE)
+
+# Plot precision-recall curve
+# plot(proc)
+
+roc_df <- data.frame(FPR = proc$curve[,1], TPR = proc$curve[,2])
+roc_df <- roc_df |> group_by(FPR) |> summarise(TPR = max(TPR))
+
+grf <-ggplot(roc_df, aes(x = FPR, y = TPR))
+grf <- grf + theme_minimal()
+grf <- grf + geom_line(color = "blue") 
+grf <- grf + annotate(geom="text", x=0.25, y=0.95, label="perfect performance", color="darkgreen")
 grf <- grf + geom_segment(aes(x = 0, y = 0, xend = 0, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
 grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
-grf <- grf + annotate(geom="text", x=0.55, y=0.4, label="random performance", color="red")
+grf <- grf + annotate(geom="text", x=0.65, y=0.4, label="random performance", color="red")
 grf <- grf + geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") 
-grf <- grf + labs(x = "False Positive Rate", y = "True Positive Rate") 
-grf <- grf + theme_minimal()
+grf <- grf + annotate(geom="text", x=0.5, y=1.05, label=sprintf("ROC curve = %.2f", proc$auc), color="blue")
+grfROC <- grf
+plot(grfROC)
 
-save_png(grf, "figures/chap6_roc.png", 1280, 720)
+# To print precision and recall values
+print(proc$curve)
+
+grf <- wrap_plots(grfROC, grfPR, ncol = 2, widths = c(1, 1, 1), heights = c(1))
+save_png(grf, "figures/chap7_roc.png", width = 1280, height = 720)
+
