@@ -2,6 +2,7 @@ source("header.R")
 options(scipen=999)
 library(ggpmisc)
 library(daltoolbox)
+library(harbinger)
 
 data(examples_harbinger)
 data <- examples_harbinger$global_temperature_yearly
@@ -65,34 +66,4 @@ grf <- grf  + font
 grfA <- grf
 
 
-model_fit <- ts_arima()
-io_train_fit <- ts_projection(ts)
-model_fit <- daltoolbox::fit(model_fit, x=io_train_fit$input, y=io_train_fit$output)
-adjust_fit <- predict(model_fit, io_train_fit$input)
-params_fit <- attr(model_fit, "params")
-temperature <- data$serie[-c(1:100)]
-adjust_fit <- adjust_fit[-c(1:100)]
-yts_fit <- ts(temperature, frequency=1, start = c(1950, 1))
-yhat_fit <- ts(adjust_fit, frequency=1, start = c(1950, 1))
-
-grf <- autoplot(yts_fit, col="black")
-grf <- grf + theme_bw(base_size = 10)
-grf <- grf + theme(plot.title = element_blank())
-grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
-grf <- grf + ylab("temperature")
-grf <- grf + xlab("time")
-grf <- grf + geom_line(aes(y=yhat_fit), col="darkblue", linetype = "dashed") 
-grf <- grf + geom_point(aes(y=yhat_fit), size = 0.5, col="darkblue") 
-grf <- grf + geom_point(aes(y=yts_fit), size = 0.5, col="black") 
-grf <- grf + labs(caption = sprintf("(b) ARIMA(%d, %d, %d) model adjustment", params_fit$p, params_fit$d, params_fit$q)) 
-grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-grf <- grf  + font
-grfB <- grf
-
-mypng(file="figures/chap2_arima.png", width = 1280, height = 1080) 
-gridExtra::grid.arrange(grfA, grfB, 
-                        layout_matrix = matrix(c(1,2), byrow = TRUE, ncol = 1))
-dev.off() 
-
-
-
+save_png(grfA, "figures/chap2_arima.png", 1280, 720)

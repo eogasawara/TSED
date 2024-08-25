@@ -43,15 +43,16 @@ graphic_seattle_seq <- function() {
   seattle$temp <- (seattle$temp - 32)/1.8
   seattle <- seattle |> select(day = Day, week = Week, temp = temp) |> group_by(week) |> summarise(temp = max(temp))
   seattle$event <- FALSE
-  #seattle$event[24:26] <- TRUE
+  seattle$event[24:26] <- TRUE
   seattle$temp[12] <- 0.8*seattle$temp[12]
   seattle$temp[19] <- 0.8*seattle$temp[19]
-  seattle$temp[26] <- 1.1*seattle$temp[24]
-  seattle$temp[25] <- 0.5*seattle$temp[24]
+  seattle$temp[26] <- 1.15*seattle$temp[24]
+  seattle$temp[25] <- 1.25*seattle$temp[24]
+  seattle$temp[24] <- 1.15*seattle$temp[24]
   seattle$temp[35] <- 0.8*seattle$temp[35]
   
   #model <- hanr_arima()
-  model <- hanr_fbiad(sw_size=12)
+  model <- harbinger()
   
   # fitting the model
   model <- fit(model, seattle$temp)

@@ -30,7 +30,7 @@ preproc <- ts_norm_gminmax()
   adjust <- as.vector(adjust)
   output <- as.vector(io_train$output)
   ev_adjust <- daltoolbox::evaluate(model, output, adjust)
-  ev_adjust$mse
+  print(head(ev_adjust$metrics))
   
   steps_ahead <- 4
   io_test <- ts_projection(samp$test)
@@ -42,6 +42,9 @@ preproc <- ts_norm_gminmax()
     output <- output[1:steps_ahead]
   
   print(sprintf("%.2f, %.2f", output, prediction))
+  
+  ev_test <- daltoolbox::evaluate(model, output, prediction)
+  print(head(ev_test$metrics))  
   
   yvalues <- c(io_train$output, io_test$output)
   
@@ -76,46 +79,7 @@ preproc <- ts_norm_gminmax()
 }
 
 
-{
-  model_fit <- ts_lstm(preproc, input_size=4, epochs=10000)
-  io_fit <- ts_projection(ts)
-  model_fit <- fit(model_fit, x=io_fit$input, y=io_fit$output)
-  
-  adjust_fit <- predict(model_fit, io_fit$input)
-  ev_adjust <- daltoolbox::evaluate(model, io_fit$output, adjust_fit)
-  adjust_fit <- as.vector(adjust_fit)
-  ev_adjust$mse
-  
-  
-  yts_fit <- c(rep(NA, 9),io_fit$output)
-  yts_fit <- yts_fit[-c(1:100)]
-  adjust_fit <- c(rep(NA, 9), adjust_fit)
-  adjust_fit <- adjust_fit[-c(1:100)]
-  yts_fit <- ts(yts_fit, frequency=1, start = c(1950, 1))
-  yhat_fit <- ts(adjust_fit, frequency=1, start = c(1950, 1))
-
-  grf <- autoplot(yts_fit, col="black")
-  grf <- grf + theme_bw(base_size = 10)
-  grf <- grf + theme(plot.title = element_blank())
-  grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
-  grf <- grf + ylab("temperature")
-  grf <- grf + xlab("time")
-  grf <- grf + geom_line(aes(y=yhat_fit), col="darkblue", linetype = "dashed") 
-  grf <- grf + geom_point(aes(y=yhat_fit), size = 0.5, col="darkblue") 
-  grf <- grf + geom_point(aes(y=yts_fit), size = 0.5, col="black") 
-  grf <- grf + labs(caption = sprintf("(b) LSTM model adjustment")) 
-  grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
-  grf <- grf  + font
-  grfB <- grf
-}
-
-mypng(file="figures/chap2_lstm.png", width = 1280, height = 1080) 
-gridExtra::grid.arrange(grfA, grfB, 
-                        layout_matrix = matrix(c(1,2), byrow = TRUE, ncol = 1))
-dev.off() 
-
-
-
+save_png(grfA, "figures/chap2_lstm.png", 1280, 720)
 
 
 
