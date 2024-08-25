@@ -37,6 +37,8 @@ grf <- grf + annotate(geom="text", x=0.5, y=0.975, label="skilled method", color
 grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
 grf <- grf + annotate(geom="text", x=0.5, y=0.525, label="unskilled method", color="red")
 grf <- grf + geom_segment(aes(x = 0, y = 0.5, xend = 1, yend = 0.5), col="red", linewidth = 0.5, linetype="dashed")
+grf <- grf + labs(caption = "(b)") 
+grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grfPR <- grf
 plot(grfPR)
 
@@ -57,6 +59,8 @@ grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen"
 grf <- grf + annotate(geom="text", x=0.65, y=0.4, label="random performance", color="red")
 grf <- grf + geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") 
 grf <- grf + annotate(geom="text", x=0.5, y=1.05, label=sprintf("ROC curve = %.2f", proc$auc), color="blue")
+grf <- grf + labs(caption = "(a)") 
+grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
 grfROC <- grf
 plot(grfROC)
 
