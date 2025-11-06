@@ -1,0 +1,73 @@
+---
+title: "Chapter 4: Model Management"
+output: html_document
+---
+
+``` r
+library(RColorBrewer)
+library(daltoolbox)
+library(harbinger)
+library(heimdall)
+library(reticulate)
+library(ggplot2)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+Model management breaks a long series into regimes where different models apply. Vertical lines M[0]..M[3] illustrate regime boundaries and a candidate unknown model region (?M) to be identified.
+## Example Overview and Goals
+We demonstrate a complete, reproducible workflow: setting up libraries, loading data, configuring a detector, fitting it, running detection, optionally evaluating, and visualizing the results.
+### Knitr Options
+Keep output clean and reproducible.
+
+
+``` r
+library(RColorBrewer)
+library(daltoolbox)
+library(harbinger)
+library(heimdall)
+library(reticulate)
+library(ggplot2)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+### Synthetic Data
+
+``` r
+x <- seq(0,3.1,0.1)
+y1 <- sin(x)
+x <- seq(3.2,4.7,0.1)
+y <- (x - 3.2)*1/1.5
+x <- seq(3.2,6.2,0.1)
+y2 <- c(y[1:(length(y)-1)], rev(y))
+x <- seq(4.8,5.8,0.1)
+y <- (x - 4.8)*1/2
+x <- seq(4.8,7.8,0.1)
+y3 <- c(y[1:(length(y)-1)], rep(0.5, 10), rev(y))
+y4 <- 0.8*y1
+x <- seq(0,12.5,0.1)
+y <- c(y1, y2, y3, y4)
+data <- data.frame(x, y)
+```
+### Visualization and Output
+Draw the synthetic series and mark hypothetical model regimes; save the figure.
+
+``` r
+grf <- ggplot(data, aes(x=x, y=y)) +
+  geom_line() +
+  geom_vline(xintercept = 0, linetype="dotted", color = "black", size=1) +  
+  ggplot2::annotate(geom="text", x=-0.2, y=0.1, label="M[0]", color="black", parse = TRUE) +  
+  geom_vline(xintercept = 3.2, linetype="dotted", color = "black", size=1) +
+  ggplot2::annotate(geom="text", x=1.6, y=0.1, label="M[1]", color="black", parse = TRUE) +
+  geom_vline(xintercept = 6.25, linetype="dotted", color = "black", size=1) +
+  ggplot2::annotate(geom="text", x=4.7, y=0.1, label="M[2]", color="black", parse = TRUE) +
+  geom_vline(xintercept = 9.35, linetype="dotted", color = "black", size=1) +
+  ggplot2::annotate(geom="text", x=7.8, y=0.1, label="M[3]", color="black", parse = TRUE) +  
+  ggplot2::annotate(geom="text", x=10.9, y=0.1, label="?M", color="black", parse = TRUE) +    
+  theme_classic()
+#save_png(grf, "figures/chap4_model_management.png", 1280, 720)
+grf
+```
+
+![plot of chunk plot](fig/chap4_model_management/plot-1.png)
+## References
+* General: Box, G. E. P. & Jenkins, G. (1970). Time Series Analysis.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

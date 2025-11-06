@@ -1,0 +1,10 @@
+```{r libs, message=FALSE, warning=FALSE}
+```
+# Chapter 5 Examples
+- [chap5_discord_sax.md](chap5_discord_sax.md) — Discord discovery using SAX representation.
+- [chap5_discords_mp.md](chap5_discords_mp.md) — Discord discovery via matrix profile.
+- [chap5_dtw.md](chap5_dtw.md) — Dynamic Time Warping (DTW) basics and usage.
+- [chap5_motifs_mp.md](chap5_motifs_mp.md) — Motif discovery with matrix profile.
+- [chap5_motifs_sax.md](chap5_motifs_sax.md) — Motif discovery with SAX.
+- [chap5_preprocessing.md](chap5_preprocessing.md) — Preprocessing pipeline for shape discovery.
+- [chap5-paa-sax.md](chap5-paa-sax.md) — Piecewise Aggregate Approximation (PAA) and SAX overview.

@@ -1,0 +1,27 @@
+# Chapter 4 Examples
+- [chap4_adwin.md](chap4_adwin.md) — Adaptive Windowing (ADWIN) change detection.
+- [chap4_amoc.md](chap4_amoc.md) — At Most One Change (AMOC) change detection.
+- [chap4_binseg.md](chap4_binseg.md) — Binary segmentation for change point detection.
+- [chap4_cf_arima.md](chap4_cf_arima.md) — Concept drift monitoring with ARIMA-based features.
+- [chap4_change_point.md](chap4_change_point.md) — Introduction to change point detection.
+- [chap4_chowtest.md](chap4_chowtest.md) — Chow test for structural break detection.
+- [chap4_cusum.md](chap4_cusum.md) — CUSUM for change detection.
+- [chap4_ddm.md](chap4_ddm.md) — Drift Detection Method (DDM).
+- [chap4_drift_type.md](chap4_drift_type.md) — Illustrates common types of concept drift.
+- [chap4_drift.md](chap4_drift.md) — Detects concept drift in streaming time series.
+- [chap4_ecdd.md](chap4_ecdd.md) — ECDD method for concept drift detection.
+- [chap4_eddm.md](chap4_eddm.md) — Early Drift Detection Method (EDDM).
+- [chap4_example.md](chap4_example.md) — End-to-end change detection example.
+- [chap4_gft.md](chap4_gft.md) — GFT-based change detection example.
+- [chap4_hddm.md](chap4_hddm.md) — HDDM change detection.
+- [chap4_kldm.md](chap4_kldm.md) — KL divergence-based monitoring (KLDM).
+- [chap4_kswin.md](chap4_kswin.md) — Kolmogorov–Smirnov Window (KSWIN) detector.
+- [chap4_model_management.md](chap4_model_management.md) — Model management under drift.
+- [chap4_multivariate_autoencoder.md](chap4_multivariate_autoencoder.md) — Multivariate autoencoder for detection.
+- [chap4_multivariate_autoencoder3d.md](chap4_multivariate_autoencoder3d.md) — 3D multivariate autoencoder example.
+- [chap4_multivariate_pca.md](chap4_multivariate_pca.md) — Multivariate PCA for change detection.
+- [chap4_multivariate_pca3d.md](chap4_multivariate_pca3d.md) — 3D multivariate PCA visualization.
+- [chap4_page_hinkley.md](chap4_page_hinkley.md) — Page–Hinkley change detection.
+- [chap4_pelt.md](chap4_pelt.md) — PELT algorithm for change points.
+- [chap4_scp_principle.md](chap4_scp_principle.md) — Principles of statistical change point (SCP) detection.
+- [chap4_scp.md](chap4_scp.md) — Statistical change point (SCP) detection in practice.

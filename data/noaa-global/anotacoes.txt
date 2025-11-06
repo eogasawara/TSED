@@ -1,0 +1,62 @@
+https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series
+https://www.ncei.noaa.gov/access/monitoring/global-temperature-anomalies/mean
+
+Global Land and Ocean Temperature Anomalies, January
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, February
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, March
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, April
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, May
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, June
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, July
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, August
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, September
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, October
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, November
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999
+
+Global Land and Ocean Temperature Anomalies, December
+Units: Degrees Celsius
+Base Period: 1901-2000
+Missing: -999

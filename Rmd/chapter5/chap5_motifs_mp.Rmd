@@ -1,0 +1,53 @@
+---
+title: "Chapter 5: Motifs via Matrix Profile"
+output: html_document
+---
+```{r libs, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(daltoolbox)
+library(harbinger)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+Matrix Profile (MP) enables fast nearest-neighbor search across all subsequences. Motifs are highly repeated patterns corresponding to low MP distances. MP can be computed with algorithms such as STAMP/STOMP.
+## Example Overview and Goals
+We load an ECG-like series, configure a motif detector using MP with STAMP, fit it, run detection, print discovered motifs, and plot results.
+### Knitr Options
+Keep output clean and reproducible.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+### Setup and Libraries
+Load helpers and packages.
+```{r libs}
+```
+### Data
+Load example series.
+```{r data}
+data(examples_motifs)
+data <- examples_motifs$mitdb102
+rownames(data) <- 1:nrow(data)
+data$event <- FALSE
+```
+### Model, Fit, and Detect
+Configure MP-based motif detector and run detection.
+```{r model-detect}
+# hmo_mp parameters:
+# - mode = "stamp": randomized MP algorithm
+# - w = 25: window size
+# - qtd = 10: number of motifs to return
+model <- fit(hmo_mp(mode = "stamp", w = 25, qtd = 10), data$serie)
+detection <- detect(model, data$serie)
+print(detection[detection$event, ])
+```
+### Visualization and Output
+Plot the series with detected motifs and save the figure.
+```{r plot}
+grf <- har_plot(model, data$serie, detection) + font
+#save_png(grf, "figures/chap5_motifs_mp.png", 1280, 720)
+grf
+```
+## References
+* Yeh, C.-C. M., et al. (2016). Matrix Profile I: All Pairs Similarity Joins for Time Series.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

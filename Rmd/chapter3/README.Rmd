@@ -1,0 +1,13 @@
+```{r libs, message=FALSE, warning=FALSE}
+```
+# Chapter 3 Examples
+- [chap3_anomalies.md](chap3_anomalies.md) — Detects anomalies in time series.
+- [chap3_arima.md](chap3_arima.md) — Performs event detection using ARIMA residuals.
+- [chap3_autoencoder.md](chap3_autoencoder.md) — Uses autoencoders for anomaly/event detection.
+- [chap3_example.md](chap3_example.md) — End-to-end example of event detection.
+- [chap3_garch.md](chap3_garch.md) — Applies GARCH modeling to capture variance dynamics.
+- [chap3_histogram.md](chap3_histogram.md) — Uses histogram-based methods for detection.
+- [chap3_kmeans.md](chap3_kmeans.md) — Clusters time series features with k-means.
+- [chap3_multi.md](chap3_multi.md) — Demonstrates multivariate event detection.
+- [chap3_seattle.md](chap3_seattle.md) — Case study on the Seattle time series dataset.
+- [chap3_svm.md](chap3_svm.md) — Applies SVM for event detection.

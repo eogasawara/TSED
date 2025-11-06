@@ -1,0 +1,123 @@
+---
+title: "Chapter 2: Sw"
+output: html_document
+---
+
+``` r
+library(ggplot2)
+library(RColorBrewer)
+library(ggpmisc)
+library(daltoolbox)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+This example focuses on sliding windows for feature construction and visualization.
+## Example Overview and Goals
+We will: set up libraries, load a short slice of the series, compute color-coded sliding windows, and visualize how windows relate to the time axis.
+### What You Will Do
+You will: prepare the environment, build sliding windows of size 3, and plot colored tiles aligned with the series.
+### Setup and Libraries
+Short rationale for the libraries and any project-specific sources.
+
+``` r
+options(scipen = 999)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+# Load example dataset
+```
+### Data Loading and Prep
+Read the dataset and perform any minimal preparation required for modeling.
+
+``` r
+data(examples_harbinger)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+data <- examples_harbinger$global_temperature_yearly
+data <- data[(nrow(data)-23+1):nrow(data),]
+y <- data$serie
+n <- length(y)
+obj <- smoothing_freq(n = 9)  
+obj <- fit(obj, y)
+yl <- transform(obj, y)
+yl <- as.integer(names(yl))
+colorsg <- brewer.pal(9, 'Greys')
+colors <- colorsg[yl]
+bcolors <- rep("black", n)
+ats <- function(y) {
+  yts <- ts(y, frequency=1, start = c(2000, 1))
+  return(yts)  
+}
+sw_size <- 3
+xw <- ts_data(y, sw_size)
+xw <- round(xw, 2)
+xwt <- as.data.frame(xw)
+xwt$sw <- 1:nrow(xwt)
+xwt <- xwt |> dplyr::select(sw, t2, t1, t0)
+xwt <- head(xwt, 5)
+xwt$sw <- as.character(xwt$sw)
+xwt$t2 <- as.character(xwt$t2)
+xwt$t1 <- as.character(xwt$t1)
+xwt$t0 <- as.character(xwt$t0)
+xwt <- rbind(xwt, data.frame(sw = '...', t2 = '...', t1 = '...', t0 = '...'))
+colnames(xwt) <- c('sw', 't-2', 't-1', 't')
+xwt <- (xwt)
+colors <- colorsg[yl]
+bcolors <- rep("black", n)
+yb <- ats(rep(14.25, n))
+ysw1 <- ats(rep(14.15, n))
+ysw1[1:(sw_size-1)] <- NA
+ysw2 <- ysw1 - 0.025
+ysw3 <- ysw2 - 0.025
+colors1 <- c(rep(NA, 2), colors[3:n])
+colors2 <- c(rep(NA, 2), colors[2:(n-1)])
+colors3 <- c(rep(NA, 2), colors[1:(n-2)])
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+grf <- autoplot(ats(y)) + theme_bw(base_size = 10) + geom_point(size=1)
+grf <- grf + theme(plot.title = element_blank())
+grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
+grf <- grf + ylab("temperature")
+grf <- grf + xlab("year")
+grf <- grf + ggplot2::annotate(geom="table",  x = 2000, y = 15, label = list(xwt), size = 5)
+grf <- grf + ggplot2::annotate(geom="text", x=2013, y=14.3, label="colored representatation for the time series", color="black")
+grf <- grf + geom_tile(aes(y=yb), height=0.025, width=1, size = 1, fill = colors, color=bcolors, alpha=0.5) 
+grf <- grf + ggplot2::annotate(geom="text", x=2013, y=14.2, label="colored representatation for the sliding windows of size 3", color="black")
+grf <- grf + ggplot2::annotate(geom="text", x=2001, y=ysw1[4], label="t", color="black")
+grf <- grf + geom_tile(aes(y=ysw1), height=0.025, width=1, size = 1, fill = colors1, color=bcolors, alpha=0.5) 
+grf <- grf + ggplot2::annotate(geom="text", x=2001, y=ysw2[4], label="t-1", color="black")
+grf <- grf + geom_tile(aes(y=ysw2), height=0.025, width=1, size = 1, fill = colors2, color=bcolors, alpha=0.5) 
+grf <- grf + ggplot2::annotate(geom="text", x=2001, y=ysw3[4], label="t-2", color="black")
+grf <- grf + geom_tile(aes(y=ysw3), height=0.025, width=1, size = 1, fill = colors3, color=bcolors, alpha=0.5) 
+grf <- grf  + font
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+#save_png(grf, "figures/chap2_sw.png", width = 1280, height = 720)
+grf
+```
+
+```
+## Warning: Removed 2 rows containing missing values or values outside the scale range (`geom_tile()`).
+## Removed 2 rows containing missing values or values outside the scale range (`geom_tile()`).
+## Removed 2 rows containing missing values or values outside the scale range (`geom_tile()`).
+```
+
+![plot of chunk viz_save](fig/chap2_sw/viz_save-1.png)
+### Other Steps
+Additional supporting steps that glue the workflow.
+## References
+* General: Box, G. E. P. & Jenkins, G. (1970). Time Series Analysis.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

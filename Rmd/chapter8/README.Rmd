@@ -1,0 +1,7 @@
+```{r libs, message=FALSE, warning=FALSE}
+```
+# Chapter 8 Examples
+- [chap8_intersection.md](chap8_intersection.md) — Intersection and ensembling of detection methods.
+- [chap8_production.md](chap8_production.md) — Productionizing time series detection pipelines.
+- [chap8_summary.md](chap8_summary.md) — Summary and guidelines for practice.
+- [chap8_wordcloud.md](chap8_wordcloud.md) — Word cloud visualization of results or labels.

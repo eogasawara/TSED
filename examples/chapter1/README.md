@@ -1,0 +1,6 @@
+
+# Chapter 1 Examples
+- [chap1_labeled_motif.md](chap1_labeled_motif.md) — Detects labeled motifs in time series.
+- [chap1_ygt.md](chap1_ygt.md) — Introduces YGT time series and detection workflow.
+- [chap1_ygt_detect_arima.md](chap1_ygt_detect_arima.md) — Applies ARIMA to detect events in YGT series.
+- [chap1_ygt_detect_chow.md](chap1_ygt_detect_chow.md) — Uses the Chow test to detect structural breaks in YGT series.

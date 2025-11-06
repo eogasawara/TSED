@@ -1,0 +1,66 @@
+---
+title: "Chapter 3: Example"
+output: html_document
+---
+```{r libs, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(daltoolbox)
+library(harbinger)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+This example demonstrates a simple event-detection workflow using Harbinger on a labeled time series with a clear train/test split. We show how to fit, detect, and visualize detections against ground-truth labels.
+## Example Overview and Goals
+We will: load a toy dataset, split it into train/test, fit a baseline detector, run detection on the full series, and produce a plot overlaying detections and labels.
+### Knitr Options
+Keep the output readable by suppressing non-essential noise.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+### Setup and Libraries
+Load project helpers and the required packages.
+```{r libs}
+```
+### Data
+Load the example dataset with labeled anomalies and inspect its structure.
+```{r data}
+data("examples_anomalies")                      # built-in toy anomalous series
+dataset <- examples_anomalies$tt_warped         # choose time-warped example
+dataset$event <- factor(dataset$event, labels = c("FALSE", "TRUE"))
+head(dataset)
+```
+### Train/Test Split and Exploratory Plot
+Create a simple temporal split and visualize the raw series.
+```{r split}
+# Quick look at the raw series
+plot_ts(x = seq_along(dataset$serie), y = dataset$serie)
+# Keep label levels for later use (optional)
+slevels <- levels(dataset$event)
+# Temporal split: first 75 points for training, the rest for testing
+train <- dataset[1:75, ]
+test  <- dataset[-(1:75), ]
+```
+### Model Configuration
+Use a default Harbinger detector (baseline choice for illustration).
+```{r model}
+model <- harbinger()
+```
+### Fit and Detect
+Fit on the training subset and run detection on the full sequence.
+```{r fit-detect}
+model <- fit(model, train$serie)                     # fit on training window
+detection <- detect(model, dataset$serie)            # detect over full series
+grf <- har_plot(model, dataset$serie, detection, as.logical(dataset$event))
+grf <- grf + geom_vline(xintercept = 75, col = "black", linetype = "dashed")
+grf <- grf + font
+```
+### Visualization and Output
+Plot detections, show the train/test delimiter, and save the figure.
+```{r plot}
+#save_png(grf, "figures/chap3_example.png", 1280, 720)
+grf
+```
+## References
+* Yeh, C.-C. M., et al. (2016). Matrix Profile I: All Pairs Similarity Joins for Time Series.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

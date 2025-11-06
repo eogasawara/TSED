@@ -1,0 +1,22 @@
+```{r libs, message=FALSE, warning=FALSE}
+```
+# Chapter 2 Examples
+- [chap2_acf.md](chap2_acf.md) — Demonstrates autocorrelation function (ACF) analysis.
+- [chap2_arima.md](chap2_arima.md) — Builds and evaluates ARIMA models.
+- [chap2_emd_decomposition.md](chap2_emd_decomposition.md) — Shows Empirical Mode Decomposition (EMD) for time series.
+- [chap2_emd.md](chap2_emd.md) — Introduces basic EMD usage for decomposition.
+- [chap2_fft_harbinger.md](chap2_fft_harbinger.md) — Uses FFT-based features with Harbinger utilities.
+- [chap2_fft.md](chap2_fft.md) — Performs Fast Fourier Transform (FFT) analysis.
+- [chap2_lstm.md](chap2_lstm.md) — Trains an LSTM model for sequence modeling.
+- [chap2_mgt_decomposition.md](chap2_mgt_decomposition.md) — Demonstrates MGT decomposition on time series.
+- [chap2_norm.md](chap2_norm.md) — Covers normalization and scaling techniques.
+- [chap2_stationary.md](chap2_stationary.md) — Assesses stationarity and transformations.
+- [chap2_sw.md](chap2_sw.md) — Applies sliding window features.
+- [chap2_ta.md](chap2_ta.md) — Applies technical analysis (TA) indicators.
+- [chap2_trend_diff.md](chap2_trend_diff.md) — Examines trends and differencing.
+- [chap2_trend.md](chap2_trend.md) — Analyzes trend extraction in time series.
+- [chap2_tt_sa.md](chap2_tt_sa.md) — Time series transformations with seasonal adjustment (SA).
+- [chap2_tt_sw.md](chap2_tt_sw.md) — Time series transformations with sliding windows.
+- [chap2_vs.md](chap2_vs.md) — Visualizes time series and derived features.
+- [chap2_wavelet.md](chap2_wavelet.md) — Explores wavelet-based analysis.
+- [chap2-frequency-discovery.md](chap2-frequency-discovery.md) — Discovers dominant frequencies in time series.

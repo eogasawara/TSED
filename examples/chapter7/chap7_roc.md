@@ -1,0 +1,177 @@
+---
+title: "Chapter 7: ROC"
+output: html_document
+---
+
+``` r
+library(RColorBrewer)
+library(ggplot2)
+library(caret)
+library(PRROC)
+library(dplyr)
+library(patchwork)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+This chapter focuses on threshold-based evaluation with ROC and Precision–Recall (PR) curves. ROC shows the tradeoff between True Positive Rate and False Positive Rate as the decision threshold varies; PR highlights precision vs. recall, which is often more informative for imbalanced data.
+## Example Overview and Goals
+We demonstrate a complete, reproducible workflow: setting up libraries, loading data, configuring a detector, fitting it, running detection, optionally evaluating, and visualizing the results.
+### Knitr Options
+Make output clean and reproducible.
+
+### Setup and Libraries
+Short rationale for the libraries and any project-specific sources.
+
+### Setup and Libraries
+Short rationale for the libraries and any project-specific sources.
+
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+# Synthetic probabilities and binary labels (for illustration)
+actual_labels <- c(TRUE, TRUE, FALSE,  TRUE, TRUE, FALSE,  FALSE, FALSE,  TRUE, FALSE)
+evt <-           c(0.9,  0.8,   0.7,   0.6,  0.55, 0.54,   0.53, 0.51,   0.5,   0.4)
+# Flip class mapping and invert scores to show varying thresholds
+actual_labels <- !actual_labels
+evt <- 1 - evt
+data <- data.frame(detect = evt >= 0.5, evt, actual_labels)
+print(data)
+```
+
+```
+##    detect  evt actual_labels
+## 1   FALSE 0.10         FALSE
+## 2   FALSE 0.20         FALSE
+## 3   FALSE 0.30          TRUE
+## 4   FALSE 0.40         FALSE
+## 5   FALSE 0.45         FALSE
+## 6   FALSE 0.46          TRUE
+## 7   FALSE 0.47          TRUE
+## 8   FALSE 0.49          TRUE
+## 9    TRUE 0.50         FALSE
+## 10   TRUE 0.60          TRUE
+```
+
+``` r
+actual_labels <- as.integer(actual_labels)
+predictions <- data.frame(evt)
+predicted_probs <- evt
+# Generate precision-recall curve with PRROC
+pr <- pr.curve(scores.class0 = predicted_probs, weights.class0 = actual_labels,
+               sorted = FALSE, curve = TRUE)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+pr_df <- data.frame(recall = pr$curve[,1], precision = pr$curve[,2])
+pr_df <- pr_df |> group_by(recall) |> summarise(precision = max(precision))
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+grf <- ggplot(pr_df, aes(x = recall, y = precision))
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+grf <- grf + theme_minimal()
+grf <- grf + geom_line(color = "blue") 
+grf <- grf + ggplot2::annotate(geom="text", x=0.5, y=1.025, label=sprintf("PR curve = %.2f", pr$auc.integral), color="blue")
+grf <- grf + ggplot2::annotate(geom="text", x=0.5, y=0.975, label="skilled method", color="darkgreen")
+grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
+grf <- grf + ggplot2::annotate(geom="text", x=0.5, y=0.525, label="unskilled method", color="red")
+grf <- grf + geom_segment(aes(x = 0, y = 0.5, xend = 1, yend = 0.5), col="red", linewidth = 0.5, linetype="dashed")
+grf <- grf + labs(caption = "(b)") 
+grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
+grfPR <- grf
+```
+
+``` r
+grfPR
+```
+
+![plot of chunk unnamed-chunk-7](fig/chap7_roc/unnamed-chunk-7-1.png)
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+# Generate ROC curve
+proc <- roc.curve(scores.class0 = predicted_probs, weights.class0 = actual_labels,
+                  sorted = FALSE, curve = TRUE)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+roc_df <- data.frame(FPR = proc$curve[,1], TPR = proc$curve[,2])
+roc_df <- roc_df |> group_by(FPR) |> summarise(TPR = max(TPR))
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+grf <-ggplot(roc_df, aes(x = FPR, y = TPR))
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+grf <- grf + theme_minimal()
+grf <- grf + geom_line(color = "blue") 
+grf <- grf + ggplot2::annotate(geom="text", x=0.25, y=0.95, label="perfect performance", color="darkgreen")
+grf <- grf + geom_segment(aes(x = 0, y = 0, xend = 0, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
+grf <- grf + geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="darkgreen", linewidth = 0.5, linetype="dashed")
+grf <- grf + ggplot2::annotate(geom="text", x=0.65, y=0.4, label="random performance", color="red")
+grf <- grf + geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") 
+grf <- grf + ggplot2::annotate(geom="text", x=0.5, y=1.05, label=sprintf("ROC curve = %.2f", proc$auc), color="blue")
+grf <- grf + labs(caption = "(a)") 
+grf <- grf + theme(plot.caption = element_text(hjust = 0.5))
+grfROC <- grf
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+grfROC
+```
+
+![plot of chunk unnamed-chunk-12](fig/chap7_roc/unnamed-chunk-12-1.png)
+### Other Steps
+Additional supporting steps that glue the workflow.
+
+``` r
+# To print precision and recall values
+print(proc$curve)
+```
+
+```
+##       [,1] [,2] [,3]
+##  [1,]  0.0  0.0 0.60
+##  [2,]  0.0  0.2 0.50
+##  [3,]  0.2  0.2 0.49
+##  [4,]  0.2  0.4 0.47
+##  [5,]  0.2  0.6 0.46
+##  [6,]  0.2  0.8 0.45
+##  [7,]  0.4  0.8 0.40
+##  [8,]  0.6  0.8 0.30
+##  [9,]  0.6  1.0 0.20
+## [10,]  0.8  1.0 0.10
+## [11,]  1.0  1.0 0.10
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+
+``` r
+grf <- wrap_plots(grfROC, grfPR, ncol = 2, widths = c(1, 1, 1), heights = c(1))
+#save_png(grf, "figures/chap7_roc.png", width = 1280, height = 720)
+grf
+```
+
+![plot of chunk unnamed-chunk-14](fig/chap7_roc/unnamed-chunk-14-1.png)
+## References
+* Fawcett, T. (2006). An introduction to ROC analysis.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

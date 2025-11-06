@@ -1,0 +1,138 @@
+---
+title: "Chapter 2: Lstm"
+output: html_document
+---
+```{r libs, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+library(ggpmisc)
+library(daltoolbox)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+This example focuses on LSTM neural networks for sequence modeling. Long Short-Term Memory (LSTM) networks model complex temporal dependencies; deviations in prediction errors may indicate events.
+## Example Overview and Goals
+We will: set up libraries, load data, create sliding-window sequences, configure and train an LSTM, evaluate on train/test splits, and visualize predictions.
+### What You Will Do
+You will: prepare the environment, build sliding windows, train an LSTM with a normalization preprocessor, evaluate, and visualize fitted vs. forecasted segments.
+### Setup and Libraries
+Load shared helpers and packages.
+```{r setup, message=FALSE, warning=FALSE}
+options(scipen = 999)
+```
+### Data Loading and Prep
+Read the dataset and perform minimal preparation.
+```{r data_loading}
+data(examples_harbinger)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r prepare_windows}
+data <- examples_harbinger$global_temperature_yearly
+data$event <- FALSE
+x <- data$serie
+sw_size <- 10
+ts <- ts_data(x, sw_size)         # build sliding windows
+ts_head(ts, 3)
+test_size <- 4                     # holdout size
+samp <- ts_sample(ts, test_size)
+ts_head(samp$train, 3)
+ts_head(samp$test)
+preproc <- ts_norm_gminmax()       # normalization
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r}
+x <- data$serie
+sw_size <- 10
+ts <- ts_data(x, sw_size)
+ts_head(ts, 3)
+test_size <- 4
+samp <- ts_sample(ts, test_size)
+ts_head(samp$train, 3)
+ts_head(samp$test)
+preproc <- ts_norm_gminmax()
+```
+### Model Configuration
+Define the detector/model and its key hyperparameters.
+```{r model_config}
+model <- ts_lstm(preproc, input_size = 4, epochs = 10000)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r model_fit}
+io_train <- ts_projection(samp$train)
+model <- fit(model, x = io_train$input, y = io_train$output)
+adjust <- predict(model, io_train$input)
+adjust <- as.vector(adjust)
+output <- as.vector(io_train$output)
+```
+### Evaluation
+Compute evaluation metrics or diagnostics if ground truth is available.
+```{r eval_train}
+ev_adjust <- daltoolbox::evaluate(model, output, adjust)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r eval_train_print}
+print(head(ev_adjust$metrics))
+steps_ahead <- 4
+io_test <- ts_projection(samp$test)
+prediction <- predict(model, x = io_test$input[1, ], steps_ahead = steps_ahead)
+prediction <- as.vector(prediction)
+output <- as.vector(io_test$output)
+if (steps_ahead > 1)
+  output <- output[1:steps_ahead]
+print(sprintf("%.2f, %.2f", output, prediction))
+```
+### Evaluation
+Compute evaluation metrics or diagnostics if ground truth is available.
+```{r eval_test}
+ev_test <- daltoolbox::evaluate(model, output, prediction)
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r eval_test_print}
+print(head(ev_test$metrics))  
+yvalues <- c(io_train$output, io_test$output)
+yts <- c(rep(NA, 9), yvalues)
+yts <- yts[-c(1:100)]
+yhat <- c(rep(NA, 9), adjust, prediction)
+yhat <- yhat[-c(1:100)]
+yts <- ts(yts, frequency = 1, start = c(1950, 1))
+yhat <- ts(yhat, frequency = 1, start = c(1950, 1))
+yhatadj <- yhat
+yhatadj[(length(yhat) - length(prediction) + 1):(length(yhat))] <- NA
+yhatpred <- yhat
+yhatpred[1:(length(yhat) - length(prediction))] <- NA
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+```{r viz_base}
+grf <- autoplot(yts, col = "black")
+```
+### Other Steps
+Additional supporting steps that glue the workflow.
+```{r viz_layers}
+grf <- grf + theme_bw(base_size = 10)
+grf <- grf + theme(plot.title = element_blank())
+grf <- grf + theme(panel.grid.major = element_blank()) + theme(panel.grid.minor = element_blank())
+grf <- grf + ylab("temperature") + xlab("time")
+grf <- grf + geom_point(aes(y = yts), size = 0.5, col = "black") 
+grf <- grf + geom_line(aes(y = yhatadj), col = "darkblue", linetype = "dashed") 
+grf <- grf + geom_point(aes(y = yhatadj), size = 0.5, col = "darkblue") 
+grf <- grf + geom_line(aes(y = yhatpred), col = "red", linetype = "dashed") 
+grf <- grf + geom_point(aes(y = yhatpred), size = 0.5, col = "red") 
+grf <- grf + labs(caption = sprintf("(a) LSTM four-step-ahead prediction")) 
+grf <- grf + theme(plot.caption = element_text(hjust = 0.5)) + font
+grfA <- grf
+```
+### Visualization and Output
+Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
+```{r viz_save}
+#save_png(grfA, "figures/chap2_lstm.png", 1280, 720)
+grfA
+```
+## References
+* Hochreiter, S., & Schmidhuber, J. (1997). Long short-term memory.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.

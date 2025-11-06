@@ -1,0 +1,84 @@
+---
+title: "Chapter 1: Ygt Detect Chow"
+output: html_document
+---
+
+``` r
+library(ggplot2)
+library(RColorBrewer)
+library(daltoolbox)
+library(harbinger)
+source("https://raw.githubusercontent.com/eogasawara/TSED/refs/heads/main/code/header.R")
+```
+## Theoretical Overview
+This example applies the Chow test for structural breaks. The Chow test assesses whether regression parameters differ before and after a candidate breakpoint, indicating a changepoint in the series.
+## Example Overview and Goals
+We walk through: setting up libraries, loading data, configuring and fitting the Chow detector, running detection, inspecting results, and visualizing the outcome.
+### What You Will Do
+You will: prepare the environment, load a dataset, configure the Chow-based detector, fit it, detect structural breaks, inspect detected events, and visualize the results.
+### Setup and Libraries
+Load project utilities and required packages.
+
+``` r
+# Shared helpers (themes, saving utilities, etc.)
+```
+### Data Loading and Prep
+Read the dataset and prepare it for modeling.
+
+``` r
+# Load example time series
+data(examples_harbinger)
+# Select the yearly global temperature series and initialize labels
+data <- examples_harbinger$global_temperature_yearly
+data$event <- FALSE
+```
+### Model Configuration
+Define the Chow-based changepoint detector.
+
+``` r
+# Chow test for potential structural breaks
+model <- hcp_chow()
+```
+### Fit the Model
+Train (fit) the detector to the time series.
+
+``` r
+model <- fit(model, data$serie)
+```
+### Event Detection
+Run the detector to obtain candidate breakpoints.
+
+``` r
+detection <- detect(model, data$serie)
+```
+### Inspect Results
+Display detected events, if any, for a quick check.
+
+``` r
+print(detection |> dplyr::filter(event == TRUE))
+```
+
+```
+##   idx event        type
+## 1 127  TRUE changepoint
+```
+### Visualization and Output
+Plot the series with detected events and save the figure.
+
+``` r
+grf <- har_plot(model, data$serie, detection, data$event, idx = data$i) +
+  font +
+  scale_x_date(
+    breaks = "10 years",
+    date_labels = "%Y",
+    limits = c(as.Date("1850-01-01"), as.Date("2030-01-01"))
+  ) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+#save_png(grf, "figures/chap1_ygt_detect_chow.png", 1280, 720)
+grf
+```
+
+![plot of chunk visualize](fig/chap1_ygt_detect_chow/visualize-1.png)
+## References
+* Chow, G. C. (1960). Tests of equality between sets of coefficients in two linear regressions.
+* Ogasawara, E., Salles, R., Porto, F., Pacitti, E. Event Detection in Time Series. Springer, 2025. doi:10.1007/978-3-031-75941-3.
