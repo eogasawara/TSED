@@ -150,8 +150,8 @@ print(head(ev_adjust$metrics))
 ```
 
 ```
-##           mse       smape        R2
-## 1 0.008971446 0.005547336 0.9146668
+##          mse       smape       R2
+## 1 0.00936063 0.005632468 0.910965
 ```
 
 ``` r
@@ -166,7 +166,7 @@ print(sprintf("%.2f, %.2f", output, prediction))
 ```
 
 ```
-## [1] "14.88, 14.80" "14.91, 14.82" "14.76, 14.82" "14.81, 14.80"
+## [1] "14.88, 14.74" "14.91, 14.74" "14.76, 14.72" "14.81, 14.70"
 ```
 ### Evaluation
 Compute evaluation metrics or diagnostics if ground truth is available.
@@ -182,8 +182,8 @@ print(head(ev_test$metrics))
 ```
 
 ```
-##           mse       smape        R2
-## 1 0.004282246 0.003866649 -0.230288
+##          mse      smape        R2
+## 1 0.01561371 0.00775121 -3.485815
 ```
 
 ``` r

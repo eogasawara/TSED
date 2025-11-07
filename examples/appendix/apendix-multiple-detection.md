@@ -146,10 +146,12 @@ print(detection_b |> dplyr::filter(event == TRUE))
 ## 7  750  TRUE anomaly
 ## 8  756  TRUE anomaly
 ## 9  758  TRUE anomaly
-## 10 771  TRUE anomaly
-## 11 777  TRUE anomaly
-## 12 787  TRUE anomaly
-## 13 795  TRUE anomaly
+## 10 761  TRUE anomaly
+## 11 768  TRUE anomaly
+## 12 771  TRUE anomaly
+## 13 774  TRUE anomaly
+## 14 787  TRUE anomaly
+## 15 795  TRUE anomaly
 ```
 ### Visualization and Output
 Plot the series with detected events and optionally save figures. Combine ggplot layers in one chunk for clarity.
@@ -198,15 +200,6 @@ Plot the series with detected events and optionally save figures. Combine ggplot
 ``` r
 grfc <- har_plot(model_c, dataset$serie, detection_c, dataset$event) + 
   labs(caption = "(c) GFT") + theme(plot.caption = element_text(hjust = 0.5)) + font
-```
-
-```
-## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.
-## ℹ The deprecated feature was likely used in the harbinger package.
-##   Please report the issue at <https://github.com/cefet-rj-dal/harbinger/issues>.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 ### Integrated View
 Combine detections by logical OR and label non-GFT positives as anomalies.
